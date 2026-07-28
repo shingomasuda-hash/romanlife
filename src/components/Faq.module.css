@@ -1,0 +1,156 @@
+.section {
+  background: var(--ivory);
+}
+
+.head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.head :global(.eyebrow) {
+  justify-content: center;
+}
+
+.title {
+  margin-top: 18px;
+}
+
+.list {
+  max-width: 860px;
+  margin-inline: auto;
+  border-top: 1px solid rgba(122, 106, 78, 0.22);
+}
+
+.item {
+  border-bottom: 1px solid rgba(122, 106, 78, 0.22);
+}
+
+.summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 8px 24px 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-mincho);
+  font-size: clamp(16.5px, 1.9vw, 18.5px);
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--green-900);
+  transition: color 0.22s ease;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  color: var(--green-600);
+}
+
+.q {
+  flex: none;
+  font-family: var(--font-latin);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--gold-500);
+  line-height: 1.7;
+  width: 20px;
+}
+
+.summaryText {
+  flex: 1;
+}
+
+.toggle {
+  flex: none;
+  margin-top: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--matcha-200);
+  display: grid;
+  place-items: center;
+  color: var(--green-700);
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.8, 0.3, 1),
+    background-color 0.25s ease;
+}
+
+.item[open] .toggle {
+  transform: rotate(45deg);
+  background: var(--matcha-050);
+}
+
+.answer {
+  display: flex;
+  gap: 16px;
+  padding: 0 8px 28px 0;
+  animation: faqOpen 0.4s cubic-bezier(0.22, 0.8, 0.28, 1) both;
+}
+
+@keyframes faqOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer {
+    animation: none;
+  }
+  .toggle {
+    transition: none;
+  }
+}
+
+.a {
+  flex: none;
+  font-family: var(--font-latin);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--matcha-400);
+  line-height: 1.9;
+  width: 20px;
+}
+
+.answerBody {
+  font-size: 15px;
+  line-height: 2.05;
+  color: var(--ink-soft);
+  padding-right: 46px;
+}
+
+.answerBody p + p {
+  margin-top: 0.9em;
+}
+
+.answerBody strong {
+  color: var(--green-800);
+  font-weight: 700;
+}
+
+.cta {
+  margin-top: 56px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .summary {
+    gap: 12px;
+    padding: 20px 0;
+  }
+  .answer {
+    gap: 12px;
+    padding-bottom: 22px;
+  }
+  .answerBody {
+    padding-right: 0;
+    font-size: 14.5px;
+  }
+}

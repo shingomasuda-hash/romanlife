@@ -1,0 +1,136 @@
+.figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  background: var(--ivory-deep);
+}
+
+.figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- プレースホルダー ------------------------------------ */
+.placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  background:
+    radial-gradient(120% 90% at 78% 18%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 62%),
+    linear-gradient(152deg, var(--ivory) 0%, var(--ivory-deep) 46%, var(--beige) 100%);
+  border: 1px solid rgba(122, 106, 78, 0.16);
+  border-radius: inherit;
+  color: var(--brown-700);
+  isolation: isolate;
+}
+
+/* 京都らしい素材感を出す、ごく淡い格子と光の粒 */
+.placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(122, 106, 78, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 106, 78, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(120% 100% at 30% 0%, #000 10%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 100% at 30% 0%, #000 10%, transparent 78%);
+}
+
+.mark {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-latin);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+}
+
+.mark::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.body {
+  position: relative;
+}
+
+.note {
+  font-size: 13px;
+  line-height: 1.75;
+  font-weight: 600;
+  color: var(--brown-700);
+  text-wrap: pretty;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  font-family: var(--font-latin);
+  letter-spacing: 0.06em;
+}
+
+.compact .note {
+  font-size: 12px;
+}
+
+.compact .meta {
+  font-size: 10px;
+}
+
+/* --- ファーストビュー用：面としての存在感を持たせ、説明は右側へ --- */
+.toneDeep {
+  background:
+    radial-gradient(72% 58% at 76% 30%, rgba(255, 252, 245, 0.92), rgba(255, 252, 245, 0) 62%),
+    linear-gradient(146deg, var(--ivory-deep) 0%, #e3d6bd 38%, #d2c3a4 70%, #bfae8c 100%);
+  border-color: rgba(122, 106, 78, 0.26);
+}
+
+/* 木・光・素材感を示唆する、ごく繊細な面の重なり */
+.toneDeep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(46% 52% at 80% 66%, rgba(101, 132, 96, 0.34), rgba(101, 132, 96, 0) 72%),
+    radial-gradient(30% 24% at 60% 22%, rgba(244, 224, 218, 0.72), rgba(244, 224, 218, 0) 72%),
+    linear-gradient(200deg, rgba(92, 74, 60, 0.12) 0%, rgba(92, 74, 60, 0) 44%);
+}
+
+.alignRight {
+  align-items: flex-end;
+  justify-content: center;
+  text-align: right;
+}
+
+.alignRight .mark {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.alignRight .mark::after {
+  flex: 0 0 40px;
+}
+
+.alignRight .body {
+  max-width: 30ch;
+}

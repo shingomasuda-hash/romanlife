@@ -1,0 +1,220 @@
+.section {
+  background: var(--white);
+}
+
+.head {
+  max-width: 760px;
+  margin-bottom: 26px;
+}
+
+.title {
+  margin: 18px 0 22px;
+}
+
+.body {
+  max-width: 44em;
+  font-size: 15.5px;
+  line-height: 2.15;
+  color: var(--ink-soft);
+  margin-bottom: 68px;
+}
+
+.body p + p {
+  margin-top: 1.4em;
+}
+
+/* =========================================================
+   キャリアの流れ
+   ========================================================= */
+.path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stage {
+  position: relative;
+  padding: 26px 24px 24px;
+  border-radius: var(--radius-m);
+  background: var(--ivory);
+  border: 1px solid rgba(122, 106, 78, 0.16);
+}
+
+.stage:first-child {
+  background: var(--green-700);
+  border-color: var(--green-700);
+}
+
+.stage:first-child .stageLabel {
+  color: var(--gold-100);
+}
+
+.stage:first-child .stageTitle {
+  color: #fff;
+}
+
+.stage:first-child .stageText {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ステージ間の矢印 */
+.stage:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  width: 16px;
+  height: 1px;
+  background: var(--gold-400);
+  z-index: 1;
+}
+
+.stage:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid var(--gold-500);
+  border-right: 1px solid var(--gold-500);
+  transform: translate(10px, -3.5px) rotate(45deg);
+  z-index: 2;
+}
+
+.stageLabel {
+  font-family: var(--font-latin);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.stageTitle {
+  font-family: var(--font-mincho);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--green-900);
+  margin-bottom: 8px;
+}
+
+.stageText {
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+}
+
+/* =========================================================
+   その先に広がるフィールド
+   ========================================================= */
+.branch {
+  margin-top: 44px;
+  padding: 38px 36px 34px;
+  border-radius: var(--radius-l);
+  background: linear-gradient(140deg, var(--matcha-050), var(--ivory) 70%);
+  border: 1px solid rgba(122, 106, 78, 0.14);
+  position: relative;
+}
+
+.branchHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.branchIcon {
+  color: var(--green-700);
+}
+
+.branchTitle {
+  text-wrap: balance;
+  font-family: var(--font-mincho);
+  font-size: clamp(18px, 2.1vw, 22px);
+  font-weight: 600;
+  color: var(--green-900);
+  line-height: 1.6;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--white);
+  border: 1px solid var(--matcha-200);
+  color: var(--green-800);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.fieldDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  flex: none;
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(122, 106, 78, 0.16);
+  font-size: 13px;
+  line-height: 1.95;
+  color: var(--ink-muted);
+}
+
+.noteIcon {
+  flex: none;
+  margin-top: 4px;
+  color: var(--gold-600);
+}
+
+.cta {
+  margin-top: 64px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .path {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .stage:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -22px;
+    left: 50%;
+    width: 1px;
+    height: 16px;
+  }
+  .stage:not(:last-child)::before {
+    top: auto;
+    right: auto;
+    bottom: -22px;
+    left: 50%;
+    transform: translate(-3.5px, 10px) rotate(135deg);
+  }
+  .branch {
+    padding: 30px 22px 26px;
+  }
+  .body {
+    margin-bottom: 48px;
+  }
+}

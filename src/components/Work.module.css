@@ -1,0 +1,194 @@
+.section {
+  background: var(--white);
+}
+
+.head {
+  max-width: 760px;
+  margin-bottom: 60px;
+}
+
+.title {
+  margin: 18px 0 20px;
+}
+
+/* =========================================================
+   仕事のつながり図解
+   ========================================================= */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  counter-reset: flow;
+}
+
+.node {
+  position: relative;
+  padding: 22px 18px 20px;
+  border-radius: var(--radius-m);
+  background: var(--ivory);
+  border: 1px solid rgba(122, 106, 78, 0.16);
+  transition: transform 0.3s ease;
+}
+
+/* 行内のノードを繋ぐ矢印 */
+.node:not(:nth-child(4n))::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  width: 14px;
+  height: 1px;
+  background: var(--gold-400);
+}
+
+.node:not(:nth-child(4n))::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid var(--gold-500);
+  border-right: 1px solid var(--gold-500);
+  transform: translate(9px, -3px) rotate(45deg);
+}
+
+.nodeNum {
+  font-family: var(--font-latin);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--gold-600);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.nodeIcon {
+  color: var(--matcha-400);
+  margin-bottom: 12px;
+}
+
+.nodeTitle {
+  font-family: var(--font-mincho);
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--green-900);
+  margin-bottom: 6px;
+}
+
+.nodeText {
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--ink-muted);
+}
+
+/* 今回のイベントの中心である販売職を強調 */
+.node.highlight {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  box-shadow: 0 8px 24px rgba(38, 80, 54, 0.22);
+}
+
+.highlight .nodeNum {
+  color: var(--gold-100);
+}
+
+.highlight .nodeIcon {
+  color: var(--gold-100);
+}
+
+.highlight .nodeTitle {
+  color: #fff;
+}
+
+.highlight .nodeText {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.badge {
+  position: absolute;
+  top: -11px;
+  left: 18px;
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: var(--gold-100);
+  color: var(--green-900);
+  border: 1px solid var(--gold-500);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   販売職の役割
+   ========================================================= */
+.callout {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 44px;
+  align-items: center;
+  padding: 44px 44px 42px;
+  border-radius: var(--radius-l);
+  background: linear-gradient(135deg, var(--matcha-050), var(--ivory) 65%);
+  border: 1px solid rgba(122, 106, 78, 0.14);
+}
+
+.calloutLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--green-700);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.calloutTitle {
+  font-family: var(--font-mincho);
+  font-size: clamp(21px, 2.6vw, 29px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--green-900);
+}
+
+.calloutText {
+  font-size: 15px;
+  line-height: 2.1;
+  color: var(--ink-soft);
+}
+
+.calloutText p + p {
+  margin-top: 1.2em;
+}
+
+@media (max-width: 1000px) {
+  .flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .node:not(:nth-child(4n))::after,
+  .node:not(:nth-child(4n))::before {
+    display: none;
+  }
+  .callout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 32px 24px 30px;
+  }
+}
+
+@media (max-width: 560px) {
+  .flow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .head {
+    margin-bottom: 44px;
+  }
+}

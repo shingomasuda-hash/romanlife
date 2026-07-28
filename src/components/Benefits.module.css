@@ -1,0 +1,175 @@
+.section {
+  background: linear-gradient(to bottom, var(--ivory) 0%, var(--ivory-deep) 100%);
+}
+
+.head {
+  max-width: 720px;
+  margin-bottom: 84px;
+}
+
+.title {
+  margin: 18px 0 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 104px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: 64px;
+  align-items: center;
+}
+
+/* PC では 01/03 がテキスト左、02/04 が写真左（交互） */
+.item:nth-child(even) .text {
+  order: 2;
+}
+
+.item:nth-child(even) .media {
+  order: 1;
+}
+
+/* 各項目で写真の入り方を少しずつ変え、単調さを避ける */
+.item:nth-child(1) .media > :global(figure) {
+  border-radius: var(--radius-m) var(--radius-m) 90px var(--radius-m);
+}
+
+.item:nth-child(2) .media > :global(figure) {
+  border-radius: 90px var(--radius-m) var(--radius-m) var(--radius-m);
+}
+
+.item:nth-child(3) .media > :global(figure) {
+  border-radius: var(--radius-m) 90px var(--radius-m) var(--radius-m);
+}
+
+.item:nth-child(4) .media > :global(figure) {
+  border-radius: var(--radius-m) var(--radius-m) var(--radius-m) 90px;
+}
+
+.media {
+  position: relative;
+}
+
+.media > :global(figure) {
+  box-shadow: var(--shadow-lift);
+}
+
+/* 写真の背後に置く、ごく淡い面 */
+.media::after {
+  content: '';
+  position: absolute;
+  inset: auto -22px -22px auto;
+  width: 62%;
+  height: 62%;
+  border: 1px solid rgba(154, 124, 60, 0.28);
+  border-radius: var(--radius-m);
+  z-index: -1;
+}
+
+.item:nth-child(even) .media::after {
+  inset: -22px auto auto -22px;
+}
+
+.num {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.numFig {
+  font-family: var(--font-latin);
+  font-size: clamp(46px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 0.85;
+  color: var(--matcha-200);
+  letter-spacing: 0.01em;
+}
+
+.numLabel {
+  font-family: var(--font-latin);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+  padding-bottom: 6px;
+  position: relative;
+}
+
+.numLabel::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+  width: 44px;
+  height: 1px;
+  background: var(--gold-400);
+}
+
+.itemTitle {
+  font-family: var(--font-mincho);
+  font-size: clamp(22px, 2.8vw, 31px);
+  font-weight: 600;
+  line-height: 1.62;
+  color: var(--green-900);
+  margin-bottom: 16px;
+}
+
+.itemText {
+  font-size: 15.5px;
+  line-height: 2.1;
+  color: var(--ink-soft);
+  max-width: 30em;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 22px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: var(--matcha-050);
+  color: var(--green-700);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.cta {
+  margin-top: 88px;
+  text-align: center;
+}
+
+@media (max-width: 940px) {
+  .list {
+    gap: 72px;
+  }
+  .item {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  /* SP ではすべて「写真 → テキスト」に統一して読み順を安定させる */
+  .item .media,
+  .item:nth-child(even) .media {
+    order: 1;
+  }
+  .item .text,
+  .item:nth-child(even) .text {
+    order: 2;
+  }
+  .media::after,
+  .item:nth-child(even) .media::after {
+    display: none;
+  }
+  .head {
+    margin-bottom: 52px;
+  }
+  .item :global(figure) {
+    border-radius: var(--radius-m) !important;
+  }
+}

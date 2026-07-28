@@ -1,0 +1,283 @@
+.section {
+  background: var(--ivory);
+  position: relative;
+  /* 装飾の円が横スクロールを発生させないようクリップする */
+  overflow: hidden;
+}
+
+/* ごく淡いピンクの光を一点だけ置き、洋菓子の幸福感を示唆する */
+.section::before {
+  content: '';
+  position: absolute;
+  top: -8%;
+  right: -6%;
+  width: 46vw;
+  max-width: 620px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pink-050), rgba(248, 235, 231, 0));
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+  gap: 72px;
+  align-items: center;
+  position: relative;
+}
+
+.question {
+  font-family: var(--font-mincho);
+  font-weight: 600;
+  font-size: clamp(26px, 3.9vw, 44px);
+  line-height: 1.62;
+  letter-spacing: 0.015em;
+  color: var(--green-900);
+  margin: 20px 0 30px;
+}
+
+.question em {
+  font-style: normal;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* 見出しの中の核となる語に、控えめなゴールドの下線 */
+.question em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.12em;
+  height: 8px;
+  background: linear-gradient(90deg, rgba(199, 169, 105, 0.42), rgba(199, 169, 105, 0.12));
+  z-index: -1;
+}
+
+.body p {
+  font-size: 16px;
+  line-height: 2.15;
+  color: var(--ink-soft);
+  max-width: 32em;
+}
+
+.body p + p {
+  margin-top: 1.5em;
+}
+
+/* --- 写真：2枚を少しずらして重ねる ---------------------- */
+.media {
+  position: relative;
+  padding-bottom: 58px;
+  padding-left: 46px;
+}
+
+.mediaMain {
+  box-shadow: var(--shadow-lift);
+}
+
+.mediaSub {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 47%;
+  box-shadow: var(--shadow-lift);
+  border: 5px solid var(--ivory);
+}
+
+/* =========================================================
+   喜びのリレー図解
+   ========================================================= */
+.relay {
+  margin-top: 108px;
+  position: relative;
+}
+
+.relayHead {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.relayTitle {
+  font-family: var(--font-mincho);
+  font-size: clamp(19px, 2.3vw, 25px);
+  font-weight: 600;
+  color: var(--green-800);
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  position: relative;
+}
+
+/* ノードを繋ぐ細いゴールドのライン（スクロールで伸びる） */
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-400), var(--matcha-400));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.5s cubic-bezier(0.22, 0.8, 0.28, 1) 0.25s;
+}
+
+.steps:global(.is-visible)::before {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steps::before {
+    transform: scaleX(1);
+    transition: none;
+  }
+}
+
+.step {
+  position: relative;
+  text-align: center;
+  padding-top: 0;
+}
+
+.stepMark {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--white);
+  border: 1px solid var(--matcha-200);
+  color: var(--green-700);
+  box-shadow: 0 4px 14px rgba(43, 39, 35, 0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.step:last-child .stepMark {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: var(--gold-100);
+}
+
+.stepNum {
+  display: block;
+  font-family: var(--font-latin);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold-600);
+  margin-bottom: 8px;
+}
+
+.stepTitle {
+  font-family: var(--font-mincho);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--green-900);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.stepText {
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--ink-muted);
+  max-width: 15em;
+  margin-inline: auto;
+}
+
+.relayFoot {
+  margin-top: 44px;
+  text-align: center;
+  font-family: var(--font-mincho);
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.95;
+  color: var(--green-800);
+}
+
+.cta {
+  margin-top: 52px;
+  text-align: center;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1000px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+  .media {
+    padding-left: 0;
+    padding-bottom: 0;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 14px;
+    align-items: end;
+  }
+  .mediaSub {
+    position: static;
+    width: auto;
+    border: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .steps::before {
+    top: 34px;
+    bottom: 34px;
+    left: 33px;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(180deg, var(--gold-400), var(--matcha-400));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.5s cubic-bezier(0.22, 0.8, 0.28, 1) 0.25s;
+  }
+  .steps:global(.is-visible)::before {
+    transform: scaleY(1);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 68px 1fr;
+    gap: 18px;
+    text-align: left;
+    padding-bottom: 30px;
+  }
+  .stepMark {
+    margin: 0;
+  }
+  .stepText {
+    max-width: none;
+    margin-inline: 0;
+  }
+  .relay {
+    margin-top: 72px;
+  }
+}
+
+@media (max-width: 600px) {
+  .body p {
+    font-size: 15.5px;
+  }
+  .media {
+    grid-template-columns: 1fr;
+  }
+  .mediaSub {
+    display: none;
+  }
+}

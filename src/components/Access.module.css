@@ -1,0 +1,162 @@
+.section {
+  background: var(--white);
+}
+
+.head {
+  margin-bottom: 46px;
+}
+
+.title {
+  margin-top: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 52px;
+  align-items: start;
+}
+
+.media > :global(figure) {
+  box-shadow: var(--shadow-lift);
+}
+
+.mediaCaption {
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink-muted);
+}
+
+.venueName {
+  font-family: var(--font-mincho);
+  font-size: clamp(20px, 2.4vw, 25px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--green-900);
+  margin-bottom: 6px;
+}
+
+.venueBuilding {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+
+.rows {
+  border-top: 1px solid rgba(122, 106, 78, 0.2);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 24px 92px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(122, 106, 78, 0.2);
+  align-items: start;
+}
+
+.rowIcon {
+  color: var(--matcha-400);
+  margin-top: 4px;
+}
+
+.rowLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-600);
+  line-height: 1.95;
+}
+
+.rowValue {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink);
+}
+
+.accessList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.accessItem {
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.accessItem b {
+  color: var(--green-800);
+  font-weight: 700;
+}
+
+.mapBtn {
+  margin-top: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1.5px solid var(--green-700);
+  color: var(--green-700);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.25s ease;
+}
+
+.mapBtn:hover {
+  background: var(--matcha-050);
+}
+
+.note {
+  margin-top: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: var(--radius-s);
+  background: var(--ivory);
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+}
+
+.noteIcon {
+  flex: none;
+  margin-top: 4px;
+  color: var(--gold-600);
+}
+
+@media (max-width: 940px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+  .rowLabel {
+    grid-column: 2;
+    line-height: 1.6;
+  }
+  .rowValue {
+    grid-column: 2;
+  }
+  .mapBtn {
+    width: 100%;
+  }
+}
+
+.cta {
+  margin-top: 64px;
+  text-align: center;
+}

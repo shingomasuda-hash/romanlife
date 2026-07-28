@@ -1,0 +1,791 @@
+.section {
+  background: var(--ivory);
+  padding-bottom: calc(var(--section-y) + 24px);
+}
+
+.head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 44px;
+}
+
+.head :global(.eyebrow) {
+  justify-content: center;
+}
+
+.title {
+  margin: 18px 0 16px;
+}
+
+.headNote {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--ink-soft);
+}
+
+.shell {
+  max-width: 800px;
+  margin-inline: auto;
+  background: var(--white);
+  border: 1px solid rgba(122, 106, 78, 0.18);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-soft);
+  padding: 44px 48px 40px;
+}
+
+/* =========================================================
+   進行ステップ
+   ========================================================= */
+.steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(122, 106, 78, 0.18);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.stepMark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ivory-deep);
+  color: var(--ink-muted);
+  font-family: var(--font-latin);
+  font-size: 12px;
+  flex: none;
+}
+
+.stepCurrent {
+  color: var(--green-800);
+  font-weight: 700;
+}
+
+.stepCurrent .stepMark {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.stepDone .stepMark {
+  background: var(--matcha-200);
+  color: var(--green-800);
+}
+
+.stepBar {
+  flex: 1;
+  height: 1px;
+  background: rgba(122, 106, 78, 0.24);
+  min-width: 10px;
+}
+
+/* =========================================================
+   エラーサマリー
+   ========================================================= */
+.summary {
+  display: flex;
+  gap: 12px;
+  padding: 18px 20px;
+  margin-bottom: 30px;
+  border: 1px solid var(--error-border);
+  border-left: 4px solid var(--error);
+  border-radius: var(--radius-s);
+  background: var(--error-bg);
+}
+
+.summaryIcon {
+  flex: none;
+  margin-top: 3px;
+  color: var(--error);
+}
+
+.summaryTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--error);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.summaryList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.summaryLink {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--error);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* =========================================================
+   フィールド
+   ========================================================= */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.field {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--green-900);
+  line-height: 1.6;
+  padding: 0;
+}
+
+.req,
+.opt {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+.req {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.opt {
+  background: var(--ivory-deep);
+  color: var(--ink-soft);
+}
+
+.help {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+
+/* --- テキスト入力 ---------------------------------------- */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 56px;
+  padding: 15px 16px;
+  border: 1.5px solid rgba(122, 106, 78, 0.32);
+  border-radius: var(--radius-s);
+  background: var(--white);
+  /* スマートフォンでの自動ズームを防ぐため 16px 未満にしない */
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  appearance: none;
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.8;
+}
+
+.select {
+  background-image: linear-gradient(45deg, transparent 50%, var(--green-700) 50%),
+    linear-gradient(135deg, var(--green-700) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) calc(50% + 2px),
+    calc(100% - 16px) calc(50% + 2px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.input:hover,
+.textarea:hover,
+.select:hover {
+  border-color: var(--matcha-400);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(38, 80, 54, 0.14);
+  outline-offset: 1px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #a9a096;
+}
+
+.hasError .input,
+.hasError .textarea,
+.hasError .select {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.counter {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  text-align: right;
+}
+
+.counterOver {
+  color: var(--error);
+  font-weight: 700;
+}
+
+/* --- 選択カード（日程・時間帯） -------------------------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 18px 17px;
+  border: 1.5px solid rgba(122, 106, 78, 0.32);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  cursor: pointer;
+  transition:
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+  min-height: 76px;
+}
+
+.card:hover:not(.cardDisabled) {
+  border-color: var(--matcha-400);
+  background: var(--matcha-050);
+}
+
+/* 選択状態を色だけで示さない：枠線・背景・チェックマークを併用 */
+.card:has(input:checked) {
+  border-color: var(--green-700);
+  border-width: 2px;
+  background: var(--matcha-050);
+  box-shadow: 0 4px 14px rgba(38, 80, 54, 0.12);
+  padding: 17px 17px 16px;
+}
+
+.card:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.cardInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.cardMark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(122, 106, 78, 0.45);
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  color: transparent;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.card:has(input:checked) .cardMark {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
+
+.cardBody {
+  min-width: 0;
+}
+
+.cardTitle {
+  display: block;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--green-900);
+  line-height: 1.6;
+}
+
+.cardMeta {
+  display: block;
+  margin-top: 3px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+
+.cardSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+.cardDisabled {
+  background: var(--ivory-deep);
+  border-style: dashed;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.cardDisabled .cardTitle,
+.cardDisabled .cardMeta {
+  color: var(--ink-muted);
+}
+
+.cardClosedTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--brown-700);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* --- チェックボックス（同意） ---------------------------- */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 22px;
+  border: 1.5px solid rgba(122, 106, 78, 0.32);
+  border-radius: var(--radius-m);
+  background: var(--ivory);
+  cursor: pointer;
+  transition: border-color 0.22s ease, background-color 0.22s ease;
+  min-height: 68px;
+}
+
+.consent:hover {
+  border-color: var(--matcha-400);
+}
+
+.consent:has(input:checked) {
+  border-color: var(--green-700);
+  background: var(--matcha-050);
+}
+
+.consent:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.hasError .consent {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.consentInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.consentMark {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(122, 106, 78, 0.45);
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  color: transparent;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.consent:has(input:checked) .consentMark {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
+
+.consentText {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.consentText a {
+  color: var(--green-700);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.policyMissing {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--brown-700);
+}
+
+/* --- エラーメッセージ ------------------------------------ */
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 9px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--error);
+}
+
+.errorIcon {
+  flex: none;
+  margin-top: 3px;
+}
+
+/* --- ハニーポット（ボット対策：人には見せない） ---------- */
+.honeypot {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* =========================================================
+   アクション
+   ========================================================= */
+.actions {
+  margin-top: 38px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(122, 106, 78, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionsRow {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+}
+
+.actionsRow > * {
+  flex: 1;
+}
+
+.submit {
+  width: 100%;
+  max-width: 420px;
+}
+
+.actionNote {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* =========================================================
+   確認画面
+   ========================================================= */
+.confirmLead {
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  border-radius: var(--radius-s);
+  background: var(--matcha-050);
+  border: 1px solid var(--matcha-200);
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--green-800);
+}
+
+.review {
+  border-top: 1px solid rgba(122, 106, 78, 0.2);
+}
+
+.reviewRow {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 4px;
+  border-bottom: 1px solid rgba(122, 106, 78, 0.2);
+}
+
+.reviewLabel {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--gold-600);
+  line-height: 1.85;
+}
+
+.reviewValue {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.reviewEmpty {
+  color: var(--ink-muted);
+  font-size: 14.5px;
+}
+
+.sendError {
+  display: flex;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border: 1px solid var(--error-border);
+  border-left: 4px solid var(--error);
+  border-radius: var(--radius-s);
+  background: var(--error-bg);
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--error);
+  font-weight: 700;
+}
+
+/* =========================================================
+   完了画面
+   ========================================================= */
+.complete {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.completeMark {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: var(--matcha-050);
+  border: 1px solid var(--matcha-200);
+  display: grid;
+  place-items: center;
+  color: var(--green-700);
+  animation: pop 0.5s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .completeMark {
+    animation: none;
+  }
+}
+
+.completeTitle {
+  font-family: var(--font-mincho);
+  font-size: clamp(22px, 3vw, 29px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--green-900);
+  margin-bottom: 14px;
+}
+
+.completeText {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--ink-soft);
+  max-width: 34em;
+  margin-inline: auto;
+}
+
+.receipt {
+  margin: 28px auto 0;
+  max-width: 480px;
+  text-align: left;
+  border: 1px solid rgba(122, 106, 78, 0.2);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.receiptHead {
+  padding: 12px 20px;
+  background: var(--green-700);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.receiptBody {
+  padding: 6px 20px 14px;
+  background: var(--ivory);
+}
+
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px dashed rgba(122, 106, 78, 0.28);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.receiptRow:last-child {
+  border-bottom: 0;
+}
+
+.receiptLabel {
+  color: var(--ink-muted);
+  font-size: 13px;
+  flex: none;
+}
+
+.receiptValue {
+  font-weight: 700;
+  color: var(--green-900);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.receiptNumber {
+  font-family: var(--font-latin);
+  letter-spacing: 0.06em;
+}
+
+.completeFoot {
+  margin-top: 28px;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+}
+
+.completeActions {
+  margin-top: 30px;
+}
+
+/* =========================================================
+   受付終了
+   ========================================================= */
+.closedBox {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.closedIcon {
+  color: var(--brown-700);
+  margin: 0 auto 18px;
+}
+
+.closedTitle {
+  font-family: var(--font-mincho);
+  font-size: clamp(19px, 2.4vw, 24px);
+  font-weight: 600;
+  color: var(--green-900);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.closedText {
+  font-size: 14.5px;
+  line-height: 1.95;
+  color: var(--ink-soft);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 760px) {
+  .shell {
+    padding: 30px 20px 28px;
+    border-radius: var(--radius-m);
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .reviewRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 14px 2px;
+  }
+  .steps {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+  }
+  .step span:last-child {
+    display: none;
+  }
+  .stepCurrent span:last-child {
+    display: inline;
+  }
+  .fields {
+    gap: 26px;
+  }
+  .actionsRow {
+    flex-direction: column;
+  }
+  .receiptRow {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .receiptValue {
+    text-align: left;
+  }
+}
