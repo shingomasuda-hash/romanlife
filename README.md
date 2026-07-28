@@ -76,6 +76,11 @@ src/
 │  ├─ scroll.ts               スムーズスクロール
 │  └─ server/                 保存・通知・送信回数制限（サーバー専用）
 └─ components/                各セクション + 申込フォーム
+
+tools/
+├─ generate-ogp.mjs           OGP画像の生成
+├─ build-static-preview.mjs   1ファイルの静的HTML書き出し
+└─ subset-fonts.py            上記で使うフォントのサブセット化
 ```
 
 ---
@@ -105,6 +110,30 @@ src/
 ```bash
 node tools/generate-ogp.mjs      # public/ogp.png を再生成（Playwright が必要）
 ```
+
+### 1ファイルの静的HTMLを書き出す（デザイン共有用）
+
+LP を「外部通信なしで開ける HTML 1枚」に固めて、メール添付やオフライン確認に使えます。
+
+```bash
+npm run build && npm start &          # LP を起動しておく
+pip install fonttools brotli          # 初回のみ（フォントのサブセット化に使用）
+npm i -D playwright                   # 初回のみ
+node tools/build-static-preview.mjs   # → preview/romanlife-lp-preview.html
+```
+
+CSS をインライン化し、見出しの明朝体はページで実際に使う文字だけへサブセットして
+data URI で埋め込むため、1ファイル約 550KB に収まります。
+
+| 含まれるもの | 含まれないもの |
+| --- | --- |
+| 全セクションの表示・レスポンシブ | 申込フォームの動作（入力→確認→完了） |
+| スクロール演出、FAQ の開閉 | 日程カード → フォームへの日程反映 |
+| ページ内リンクのスムーズスクロール | 入力エラー表示・締切による選択制御 |
+
+React を同梱しないため、フォームは動作しません。誤って入力されないよう
+入力欄は無効化し、冒頭に「デザイン確認用プレビュー」の注記を入れています。
+申込機能まで確認する場合は `npm run dev` かデプロイ後のページをご覧ください。
 
 ### Google Analytics を追加する
 
