@@ -13,3 +13,6 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 /data/entries.jsonl
 /preview/
+# tools/copy-static.mjs がビルド時に生成する（実体は /image-lp、/static-lp）
+/public/image-lp/
+/public/static-lp/

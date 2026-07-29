@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run copy-static && next dev",
+    "copy-static": "node tools/copy-static.mjs",
+    "prebuild": "npm run copy-static",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

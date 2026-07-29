@@ -22,6 +22,10 @@ python3 -m http.server 3000     # → http://localhost:3000
 公開時は `image-lp/` の中身をそのままWebサーバーへ配置してください。
 外部CDNへの通信は一切ありません（フォントも同梱）。
 
+このリポジトリを Vercel へデプロイした場合は、ビルド時に `public/image-lp/` へ
+自動コピーされ **`/image-lp`** で公開されます（詳細はリポジトリ直下の `README.md`）。
+編集はこの `image-lp/` に対して行ってください。
+
 ```
 image-lp/
 ├─ index.html      画像パネル＋アクセス／FAQ／申込フォームのマークアップ

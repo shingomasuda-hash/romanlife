@@ -31,6 +31,26 @@ npm run typecheck              # 型チェック
 > `ENTRY_WEBHOOK_URL` を設定してください（未設定でも一時領域へは書き込まれますが、
 > 再デプロイで消えます）。
 
+### 公開されるURL
+
+| URL | 中身 |
+| --- | --- |
+| `/` | Next.js版LP（このリポジトリ本体） |
+| `/image-lp` | 画像つなぎ版LP（`image-lp/` の内容） |
+| `/static-lp` | HTML/CSS実装版LP（`static-lp/` の内容） |
+
+`image-lp/` と `static-lp/` は Next.js のビルド対象外のため、`npm run build` の前に
+`tools/copy-static.mjs` が `public/` へコピーします（`prebuild` スクリプト）。
+`public/image-lp/` `public/static-lp/` はビルド生成物なので Git には含めていません。
+**編集するのはリポジトリ直下の `image-lp/` `static-lp/` のほうです。**
+
+トップページ（`/`）を画像つなぎ版に切り替えたい場合は、`next.config.mjs` の
+`rewrites()` に次を追加してください（Next.js版のページは表示されなくなります）。
+
+```js
+{ source: '/', destination: '/image-lp/index.html' },
+```
+
 ---
 
 ## 2. 技術構成
