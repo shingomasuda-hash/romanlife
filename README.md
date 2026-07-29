@@ -35,21 +35,31 @@ npm run typecheck              # 型チェック
 
 | URL | 中身 |
 | --- | --- |
-| `/` | Next.js版LP（このリポジトリ本体） |
-| `/image-lp` | 画像つなぎ版LP（`image-lp/` の内容） |
+| `/` | **画像つなぎ版LP**（`image-lp/` の内容） |
+| `/image-lp` | 同上（直接のURL） |
 | `/static-lp` | HTML/CSS実装版LP（`static-lp/` の内容） |
+| `/next-lp` | Next.js版LP（`src/app/page.tsx`） |
 
 `image-lp/` と `static-lp/` は Next.js のビルド対象外のため、`npm run build` の前に
 `tools/copy-static.mjs` が `public/` へコピーします（`prebuild` スクリプト）。
 `public/image-lp/` `public/static-lp/` はビルド生成物なので Git には含めていません。
 **編集するのはリポジトリ直下の `image-lp/` `static-lp/` のほうです。**
 
-トップページ（`/`）を画像つなぎ版に切り替えたい場合は、`next.config.mjs` の
-`rewrites()` に次を追加してください（Next.js版のページは表示されなくなります）。
+トップページの差し替えは `next.config.mjs` の `rewrites().beforeFiles` で行っています。
+`index.html` が相対パスで `styles.css` `script.js` `assets/…` を参照しているため、
+それらも合わせて `/image-lp/` 配下へ向けています。
 
 ```js
-{ source: '/', destination: '/image-lp/index.html' },
+beforeFiles: [
+  { source: '/', destination: '/image-lp/index.html' },
+  { source: '/styles.css', destination: '/image-lp/styles.css' },
+  { source: '/script.js', destination: '/image-lp/script.js' },
+  { source: '/assets/:path*', destination: '/image-lp/assets/:path*' },
+],
 ```
+
+- **トップをNext.js版に戻す** … 上記 `beforeFiles` を丸ごと削除
+- **トップを `static-lp` にする** … 上記4行の `/image-lp/` を `/static-lp/` に置き換え
 
 ---
 
