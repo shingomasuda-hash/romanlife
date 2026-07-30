@@ -35,9 +35,9 @@ npm run typecheck              # 型チェック
 
 | URL | 中身 |
 | --- | --- |
-| `/` | **画像つなぎ版LP**（`image-lp/` の内容） |
-| `/image-lp` | 同上（直接のURL） |
-| `/static-lp` | HTML/CSS実装版LP（`static-lp/` の内容） |
+| `/` | **HTML/CSS実装版LP**（`static-lp/` の内容） |
+| `/static-lp` | 同上（直接のURL） |
+| `/image-lp` | 画像つなぎ版LP（カンプ画像を連結したもの。参考用） |
 | `/next-lp` | Next.js版LP（`src/app/page.tsx`） |
 
 `image-lp/` と `static-lp/` は Next.js のビルド対象外のため、`npm run build` の前に
@@ -51,15 +51,15 @@ npm run typecheck              # 型チェック
 
 ```js
 beforeFiles: [
-  { source: '/', destination: '/image-lp/index.html' },
-  { source: '/styles.css', destination: '/image-lp/styles.css' },
-  { source: '/script.js', destination: '/image-lp/script.js' },
-  { source: '/assets/:path*', destination: '/image-lp/assets/:path*' },
+  { source: '/', destination: '/static-lp/index.html' },
+  { source: '/styles.css', destination: '/static-lp/styles.css' },
+  { source: '/script.js', destination: '/static-lp/script.js' },
+  { source: '/assets/:path*', destination: '/static-lp/assets/:path*' },
 ],
 ```
 
 - **トップをNext.js版に戻す** … 上記 `beforeFiles` を丸ごと削除
-- **トップを `static-lp` にする** … 上記4行の `/image-lp/` を `/static-lp/` に置き換え
+- **トップを `image-lp` にする** … 上記4行の `/static-lp/` を `/image-lp/` に置き換え
 
 ---
 

@@ -7,17 +7,17 @@ const nextConfig = {
   },
   async rewrites() {
     return {
-      // トップページは画像つなぎ版LPを配信する。
+      // トップページは HTML/CSS 実装版LP（static-lp）を配信する。
       // beforeFiles でないと src/app/page.tsx のルートが先に一致してしまう。
       // Next.js版LPに戻す場合は、この beforeFiles ごと消してください（/next-lp でも見られます）。
       //
       // index.html が相対パス（styles.css / script.js / assets/…）で参照しているため、
-      // それらも合わせて /image-lp/ 配下へ向ける。
+      // それらも合わせて /static-lp/ 配下へ向ける。
       beforeFiles: [
-        { source: '/', destination: '/image-lp/index.html' },
-        { source: '/styles.css', destination: '/image-lp/styles.css' },
-        { source: '/script.js', destination: '/image-lp/script.js' },
-        { source: '/assets/:path*', destination: '/image-lp/assets/:path*' },
+        { source: '/', destination: '/static-lp/index.html' },
+        { source: '/styles.css', destination: '/static-lp/styles.css' },
+        { source: '/script.js', destination: '/static-lp/script.js' },
+        { source: '/assets/:path*', destination: '/static-lp/assets/:path*' },
       ],
       // /image-lp、/static-lp をディレクトリのように開けるようにする
       // （public/ 配下の静的ファイルは index.html を自動では解決しないため）
