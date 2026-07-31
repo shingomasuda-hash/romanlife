@@ -36,9 +36,14 @@ npm run typecheck              # 型チェック
 | URL | 中身 |
 | --- | --- |
 | `/` | **HTML/CSS実装版LP**（`static-lp/` の内容） |
-| `/static-lp` | 同上（直接のURL） |
-| `/image-lp` | 画像つなぎ版LP（カンプ画像を連結したもの。参考用） |
+| `/static-lp` | 同上（比較用の直接URL。`/static-lp/index.html` へ転送） |
+| `/image-lp` | 画像つなぎ版LP（カンプ画像を連結したもの。`/image-lp/index.html` へ転送） |
 | `/next-lp` | Next.js版LP（`src/app/page.tsx`） |
+
+`/static-lp` と `/image-lp` を**リライトではなくリダイレクト**にしているのは、
+各 `index.html` が `styles.css` / `script.js` / `assets/…` を相対パスで参照しているためです。
+`/image-lp` のまま配信するとブラウザは `/assets/…` を要求し、
+トップページ用のリライト（static-lp向け）と衝突して画像が404になります。
 
 `image-lp/` と `static-lp/` は Next.js のビルド対象外のため、`npm run build` の前に
 `tools/copy-static.mjs` が `public/` へコピーします（`prebuild` スクリプト）。

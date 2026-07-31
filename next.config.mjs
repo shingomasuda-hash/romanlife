@@ -19,15 +19,21 @@ const nextConfig = {
         { source: '/script.js', destination: '/static-lp/script.js' },
         { source: '/assets/:path*', destination: '/static-lp/assets/:path*' },
       ],
-      // /image-lp、/static-lp をディレクトリのように開けるようにする
-      // （public/ 配下の静的ファイルは index.html を自動では解決しないため）
-      afterFiles: [
-        { source: '/image-lp', destination: '/image-lp/index.html' },
-        { source: '/image-lp/', destination: '/image-lp/index.html' },
-        { source: '/static-lp', destination: '/static-lp/index.html' },
-        { source: '/static-lp/', destination: '/static-lp/index.html' },
-      ],
+      afterFiles: [],
     };
+  },
+  // 各版へのショートURL。
+  // リライトではなくリダイレクトにしているのは、index.html が相対パスで
+  // styles.css / script.js / assets/… を参照しているため。
+  // /image-lp のまま配信するとブラウザは /assets/… を要求してしまい、
+  // トップ用のリライト（static-lp向け）と衝突する。
+  async redirects() {
+    return [
+      { source: '/static-lp', destination: '/static-lp/index.html', permanent: false },
+      { source: '/static-lp/', destination: '/static-lp/index.html', permanent: false },
+      { source: '/image-lp', destination: '/image-lp/index.html', permanent: false },
+      { source: '/image-lp/', destination: '/image-lp/index.html', permanent: false },
+    ];
   },
   async headers() {
     return [
