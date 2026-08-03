@@ -392,8 +392,8 @@ legend { padding: 0; }
   color: var(--ink-soft); margin-bottom: 10px;
 }
 .bb-logo { display: block; height: auto; margin-inline: auto; }
-.bb-logo-mb { width: clamp(196px, 54vw, 250px); }
-.bb-logo-rl { width: clamp(200px, 56vw, 258px); margin-top: 4px; }
+.bb-logo-mb { width: clamp(196px, 54vw, 250px); margin-top: 2px; }
+.bb-logo-rl { width: clamp(200px, 56vw, 258px); }
 .bb-conj {
   display: flex; align-items: center; gap: 12px;
   margin: 13px 0 12px;

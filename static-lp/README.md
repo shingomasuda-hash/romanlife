@@ -215,7 +215,7 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 | カンプの要素 | 実装 |
 | --- | --- |
 | 上部の帯「2028年卒対象／採用説明会・オープン・カンパニー」 | HTML＋CSS（`.hero-ribbon`） |
-| 「京都洋菓子ブランド」「を展開する」「株式会社ロマンライフ」 | HTMLテキスト |
+| 「株式会社ロマンライフ」「が展開する」「京都洋菓子ブランド」 | HTMLテキスト |
 | MALEBRANCHE ／ ROMANLIFE のロゴ | **画像**（`assets/images/logo-*.png`） |
 | 「2028 GRADUATES」 | HTMLテキスト＋CSS（`.hero-grad`） |
 | 見出し・リード文 | HTMLテキスト |
