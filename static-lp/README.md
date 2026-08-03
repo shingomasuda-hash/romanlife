@@ -299,7 +299,7 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 | 生成した画像 | 使用箇所 | 元ファイル |
 | --- | --- | --- |
 | `benefit-01.webp` | SECTION 03 ②お菓子・食品業界を知る | `ロマンの森_内観_ショーケース1.jpg` |
-| `benefit-03.webp` | SECTION 03 ③販売スタッフを体験する | `大塚さん.JPG`（接客ロールプレイングコンテスト） |
+| `benefit-03.webp` | SECTION 03 ③販売スタッフを体験する | `M_2024_kamikatsura_53_s.jpg`（お客さまへ紙袋をお渡し） |
 | `benefit-04.webp` | SECTION 03 ④働く人と会社の空気を知る | `休憩室_1.jpg` |
 | `prog-01.webp` | プログラム 01 受付・オープニング | `会議室_1.jpg` |
 | `prog-03.webp` | プログラム 02 ロマンライフについて | `移動販売_キッチンカー2.jpeg` |
@@ -311,15 +311,18 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 | `company-case.webp` | SECTION 05 小さい写真 | `ロマンの森_内観_ショーケース2.jpg` |
 | `career-staff.webp` | SECTION 06 キャリア | `M_2024_kamikatsura_57_s.jpg` |
 | `career-handover.webp` | SECTION 07 ひとつのお菓子を届けるまで | `M_2024_kamikatsura_73_s.jpg` |
-| `voice-01/02/03.webp` | SECTION 08 従業員インタビュー | `HP船木さん2.jpg`／`240208romanlife169.jpg`／`HP船木さん(喫茶).jpg` |
+| `voice-01/02/03.webp` | SECTION 08 従業員インタビュー | `HP船木さん2.jpg`／`240208romanlife169.jpg`／`大塚さん.JPG` |
 | `access-store.webp` | 会場アクセス | `ロマンの森_外観.jpg` |
 
 **AI生成画像は残っていません。** `alt` もすべて実際の写真の内容へ書き換えています。
 
 ### 未使用の写真
 
-`HP船木さん＆西川さん2.jpg`／`M_2021_JRrm_086_s.jpg`／`M_2024_kamikatsura_53_s.jpg`／
+`HP船木さん＆西川さん2.jpg`／`HP船木さん(喫茶).jpg`／`M_2021_JRrm_086_s.jpg`／
 `ロマンの森スタッフ_1.jpg`。差し替えのご希望があればお知らせください。
+
+> 座談会の3枚目は `大塚さん.JPG` を使っています（吹き出しに顔がかからないよう、
+> お客さま役が画角に入らない範囲で切り出しています）。
 
 ### いただけていない素材
 
