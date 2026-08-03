@@ -161,7 +161,7 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 
 | 項目 | 現状 | 対応 |
 | --- | --- | --- |
-| **写真** | ファーストビュー・SECTION 02・SECTION 03「ロマンライフを知る」は**ご支給の実写**。それ以外はデザインカンプから切り出したAI生成画像 | 残りも実写へ差し替えてください（→ 8章） |
+| **写真** | **すべてご支給の実写**に差し替え済み | — |
 | **ブランドロゴ** | ご支給のFV画像から切り出し、周囲の背景のみ透明化したPNG | 公式のロゴデータ（SVG / 透明PNG）へ差し替えてください（→ 9章） |
 | **送信先API** | 未設定（`ENTRY_API = null`） | 4章のとおり設定 |
 | **プライバシーポリシーURL** | 未設定（画面に注意書きが出ます） | `PRIVACY_POLICY_URL` を設定 |
@@ -294,8 +294,35 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 - `<picture>` で画面幅に応じて2種類を出し分けています
 - 写真の上端はアイボリーへ溶かして、コピー部分と自然につなげています
 
-### まだAI生成画像のままの箇所
+### 第2弾（全セクション）の割り当て
 
-SECTION 04（プログラム7点）、SECTION 05（会社紹介2点）、SECTION 06（キャリア2点）、
-SECTION 08（座談会3点）、SECTION 03 の 01以外の3点。
-実写をいただければ同じ手順で差し替えます。
+| 生成した画像 | 使用箇所 | 元ファイル |
+| --- | --- | --- |
+| `benefit-01.webp` | SECTION 03 ②お菓子・食品業界を知る | `ロマンの森_内観_ショーケース1.jpg` |
+| `benefit-03.webp` | SECTION 03 ③販売スタッフを体験する | `大塚さん.JPG`（接客ロールプレイングコンテスト） |
+| `benefit-04.webp` | SECTION 03 ④働く人と会社の空気を知る | `休憩室_1.jpg` |
+| `prog-01.webp` | プログラム 01 受付・オープニング | `会議室_1.jpg` |
+| `prog-03.webp` | プログラム 02 ロマンライフについて | `移動販売_キッチンカー2.jpeg` |
+| `prog-05.webp` | プログラム 03 本社・社内見学 | `休憩室_2.jpg`（沿革パネルの廊下） |
+| `prog-04.webp` | プログラム 05 販売スタッフ体験グループワーク | `会議室_2.jpg` |
+| `prog-06.webp` | プログラム 06 採用担当者との座談会 | `M_2024_kamikatsura_84_s.jpg` |
+| `prog-07.webp` | プログラム 07 今後のステップ・案内 | `ロマンの森スタッフ_2.jpg` |
+| `company-store.webp` | SECTION 05 大きい写真／最終CTAの背景 | `ロマンの森_外観_ロマンくん.jpg` |
+| `company-case.webp` | SECTION 05 小さい写真 | `ロマンの森_内観_ショーケース2.jpg` |
+| `career-staff.webp` | SECTION 06 キャリア | `M_2024_kamikatsura_57_s.jpg` |
+| `career-handover.webp` | SECTION 07 ひとつのお菓子を届けるまで | `M_2024_kamikatsura_73_s.jpg` |
+| `voice-01/02/03.webp` | SECTION 08 従業員インタビュー | `HP船木さん2.jpg`／`240208romanlife169.jpg`／`HP船木さん(喫茶).jpg` |
+| `access-store.webp` | 会場アクセス | `ロマンの森_外観.jpg` |
+
+**AI生成画像は残っていません。** `alt` もすべて実際の写真の内容へ書き換えています。
+
+### 未使用の写真
+
+`HP船木さん＆西川さん2.jpg`／`M_2021_JRrm_086_s.jpg`／`M_2024_kamikatsura_53_s.jpg`／
+`ロマンの森スタッフ_1.jpg`。差し替えのご希望があればお知らせください。
+
+### いただけていない素材
+
+- `オフィス_1/2.jpg`、`オフィス入り口_1/2.jpg`、`北山本店_外観.jpg`、`木村さん.JPG`
+- **ロゴ2点**（`マールブランシュ ロゴ.jpg`／`romanlife_logo_Rwhite.png`）… FVのロゴは
+  引き続きご支給FV画像からの切り出しのままです
