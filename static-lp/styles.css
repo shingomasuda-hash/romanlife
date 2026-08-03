@@ -365,56 +365,19 @@ legend { padding: 0; }
 
 .hero-main { position: relative; padding-top: 26px; padding-bottom: 28px; }
 
-/* 写真：右側に人物、左にコピー用の余白。文字の背後はアイボリーで抜く */
-.hero-photo {
-  position: absolute; inset: 0 0 0 auto;
-  width: 62%;
-  z-index: 0;
-}
-.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
-/* 写真の左端を硬い直線にしないよう、写真自体をぼかして溶け込ませる */
-.hero-photo {
-  -webkit-mask-image: linear-gradient(100deg, transparent 0%, rgba(0,0,0,.45) 14%, #000 38%);
-  mask-image: linear-gradient(100deg, transparent 0%, rgba(0,0,0,.45) 14%, #000 38%);
-}
-.hero-veil {
-  position: absolute; inset: 0; z-index: 1;
-  background:
-    linear-gradient(96deg,
-      var(--ivory) 0%, var(--ivory) 34%,
-      rgba(248,243,232,.9) 48%,
-      rgba(248,243,232,.6) 60%,
-      rgba(248,243,232,.18) 76%,
-      rgba(248,243,232,0) 90%);
-}
-.hero-veil-b {
-  position: absolute; inset: auto 0 0 0; height: 30%; z-index: 1;
-  background: linear-gradient(to top, var(--ivory) 6%, rgba(248,243,232,0));
+/* 集合写真：コピーの下に横長で敷く（上端はアイボリーへ溶かす） */
+.hero-band { position: relative; z-index: 2; background: var(--ivory); line-height: 0; }
+.hero-band img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 42%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 9%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 9%);
 }
 .hero-copy { position: relative; z-index: 2; max-width: 560px; }
 
 /* SP：写真の上にコピーを重ねるため、左〜中央のベールを強める */
-/* SP：文字の背後になるため、写真は下寄せ＋ベールを強めて可読性を確保する */
 @media (max-width: 767px) {
-  .hero-photo { inset: auto 0 0 auto; width: 78%; height: 58%; }
-  .hero-photo img { object-position: 50% 26%; }
-  /* 上からと左からの2枚重ねで、写真が文字の背後に来る部分だけを強く抜く */
-  .hero-veil {
-    background:
-      linear-gradient(to bottom,
-        var(--ivory) 0%,
-        rgba(248,243,232,.93) 32%,
-        rgba(248,243,232,.58) 52%,
-        rgba(248,243,232,0) 74%),
-      linear-gradient(104deg,
-        var(--ivory) 0%, var(--ivory) 26%,
-        rgba(248,243,232,.9) 44%,
-        rgba(248,243,232,.62) 62%,
-        rgba(248,243,232,.22) 82%,
-        rgba(248,243,232,0) 96%);
-  }
-  .hero-veil-b { height: 18%; }
-  .hero-main { padding-top: 20px; padding-bottom: 20px; }
+  .hero-main { padding-top: 20px; padding-bottom: 18px; }
 }
 
 /* ブランド表示（ロゴは公式のものを画像で配置。文字は加工しない） */
@@ -654,8 +617,8 @@ legend { padding: 0; }
   .hd-list { grid-template-columns: 1fr 1fr; gap: 12px; }
 }
 @media (min-width: 768px) {
-  .hero-main { padding-top: 40px; padding-bottom: 40px; }
-  .hero-photo { width: 48%; }
+  .hero-main { padding-top: 40px; padding-bottom: 32px; }
+  .hero-band img { aspect-ratio: 16 / 7; object-position: 50% 46%; }
   .hero-title { font-size: clamp(40px, 5.2vw, 48px); }
   .hero-copy { max-width: 620px; }
   .hero-dates .wrap { padding-block: 6px 36px; }
@@ -672,8 +635,8 @@ legend { padding: 0; }
 }
 
 @media (min-width: 1100px) {
-  .hero-photo { width: 44%; }
   .hero-copy { max-width: 660px; }
+  .hero-band img { aspect-ratio: 21 / 8; }
 }
 
 /* -------------------------------------------------------------------------
@@ -720,8 +683,11 @@ legend { padding: 0; }
 }
 
 /* 写真グリッド */
-.intro-photos { margin-top: 30px; display: grid; grid-template-columns: 1.05fr 1fr; grid-template-rows: auto auto; gap: 10px; }
-.intro-photos .p1 { grid-row: 1 / 3; }
+.intro-photos { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.intro-photos .p1 { grid-column: 1 / -1; }
+.intro-photos img { width: 100%; height: 100%; object-fit: cover; }
+.intro-photos .p1 img { aspect-ratio: 16 / 10; }
+.intro-photos .photo:not(.p1) img { aspect-ratio: 3 / 2; }
 @media (min-width: 768px) { .intro-photos { gap: 16px; } }
 
 .intro-cta { margin-top: 36px; }
@@ -764,7 +730,7 @@ legend { padding: 0; }
   font-size: 12.5px; font-weight: 700; line-height: 1.6;
 }
 .bene-photo { grid-column: 1 / -1; margin-top: 14px; border-radius: var(--r-m); overflow: hidden; }
-.bene-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.bene-photo img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 58%; }
 
 @media (min-width: 700px) {
   .bene-card { grid-template-columns: 54px minmax(0,1fr) 40%; gap: 0 20px; padding: 24px; align-items: center; }
