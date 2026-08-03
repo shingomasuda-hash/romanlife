@@ -24,9 +24,9 @@
         { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
         { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
       ],
-      deadline: '2026-08-11T00:00:00+09:00',
-      deadlineDisplay: '2026年8月11日（火）0:00',
-      deadlineShort: '8月11日（火）0:00'
+      deadline: '2026-08-10T12:00:00+09:00',
+      deadlineDisplay: '2026年8月10日（月）12:00',
+      deadlineShort: '8月10日（月）12:00'
     },
     {
       id: '2026-08-31',
@@ -40,13 +40,29 @@
         { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
         { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
       ],
-      deadline: '2026-08-31T00:00:00+09:00',
-      deadlineDisplay: '2026年8月31日（月）0:00',
-      deadlineShort: '8月31日（月）0:00'
+      deadline: '2026-08-30T12:00:00+09:00',
+      deadlineDisplay: '2026年8月30日（日）12:00',
+      deadlineShort: '8月30日（日）12:00'
+    },
+    {
+      id: '2026-09-04',
+      displayDate: '2026年9月4日（金）',
+      monthDay: '9月4日',
+      monthDayWeek: '9月4日（金）',
+      ymd: '2026.09.04',
+      weekday: 'FRI',
+      readable: '2026年9月4日 金曜日',
+      sessions: [
+        { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
+        { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
+      ],
+      deadline: '2026-09-03T12:00:00+09:00',
+      deadlineDisplay: '2026年9月3日（木）12:00',
+      deadlineShort: '9月3日（木）12:00'
     }
   ];
 
-  var DEADLINE_NOTE = '開催日になった時点で受付終了となります。';
+  var DEADLINE_NOTE = '開催日前日の12:00（正午）で受付を締め切ります。';
 
   /* -----------------------------------------------------------------------
      送信先の設定
@@ -145,7 +161,7 @@
         '<div class="deadline">' +
           '<span class="deadline-en">Entry Deadline</span>' +
           '<p class="deadline-top">' + icon('cal', 19) +
-            '<span class="deadline-date">' + esc(d.monthDayWeek) + ' <b>0:00</b>締切</span>' +
+            '<span class="deadline-date">' + esc(d.deadlineShort.replace('12:00', '')) + '<b>12:00</b>締切</span>' +
           '</p>' +
           '<p class="deadline-note">' + DEADLINE_NOTE + '</p>' +
         '</div>' +
@@ -201,7 +217,7 @@
       var closed = isClosed(d, now);
       return '' +
       '<div class="final-date">' +
-        '<p class="final-dlabel">参加希望日' + (i === 0 ? '①' : '②') + '</p>' +
+        '<p class="final-dlabel">参加希望日' + '①②③④⑤'.charAt(i) + '</p>' +
         '<p class="final-drow">' +
           '<span class="final-dico">' + icon('cal', 18) + '</span>' +
           '<span class="final-dtext">' +
@@ -212,7 +228,7 @@
         '<p class="final-ddl">' +
           (closed
             ? '<span class="final-closed">受付終了</span>'
-            : '締切　<b>' + esc(d.deadlineShort) + '</b>締切') +
+            : '締切　<b>' + esc(d.deadlineShort) + '</b>') +
         '</p>' +
       '</div>';
     }).join('');

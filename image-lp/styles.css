@@ -1251,3 +1251,33 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
   font-family: var(--gothic); font-size: 15px; font-weight: 700;
   color: var(--ink-soft); letter-spacing: .06em; text-decoration: none;
 }
+
+.faq-ul { margin-top: .7em; padding-left: 1.15em; list-style: disc; }
+.faq-ul li { margin-top: .35em; }
+.faq-ul li::marker { color: var(--gold-deep); }
+
+/* 申込フォーム：個人情報の取り扱い */
+.privacy-box {
+  margin-bottom: 16px; padding: 16px 18px;
+  background: var(--ivory); border: 1px solid var(--gold-light); border-radius: var(--r-s);
+  max-height: 190px; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.privacy-title {
+  font-family: var(--mincho); font-weight: 600;
+  font-size: 16px; color: var(--green); margin-bottom: 9px;
+}
+.privacy-list { padding-left: 1.15em; list-style: disc; }
+.privacy-list li { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
+.privacy-list li + li { margin-top: .7em; }
+.privacy-list li::marker { color: var(--gold-deep); }
+
+/* パネル画像が旧版であることの注記 */
+.panel-note {
+  display: flex; align-items: flex-start; gap: 9px;
+  max-width: var(--wrap); margin: 0 auto; padding: 14px 20px 16px;
+  background: var(--ivory);
+  font-size: 13.5px; line-height: 1.8; color: var(--ink-soft);
+}
+.panel-note svg { flex: none; margin-top: 3px; color: var(--gold-deep); }
+.panel-note a { color: var(--green); text-underline-offset: 3px; }
