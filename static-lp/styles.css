@@ -104,7 +104,10 @@ body {
 
 h1, h2, h3, h4, p, figure, dl, dd, blockquote { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
+/* width/height 属性がブラウザ側で高さの既定値として効くのを打ち消す。
+   高さを持たせたい箇所（.photo img など）は個別に指定する。 */
 img, svg { display: block; max-width: 100%; }
+img { height: auto; }
 button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
 input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
