@@ -12,7 +12,7 @@ import type { EntryRecord } from './storage';
  */
 
 type Mail = {
-  to: string;
+  to: string | string[];
   subject: string;
   text: string;
   replyTo?: string;
@@ -33,7 +33,7 @@ async function sendMail(mail: Mail): Promise<boolean> {
       },
       body: JSON.stringify({
         from: process.env.ENTRY_FROM_EMAIL,
-        to: [mail.to],
+        to: Array.isArray(mail.to) ? mail.to : [mail.to],
         subject: mail.subject,
         text: mail.text,
         ...(mail.replyTo ? { reply_to: mail.replyTo } : {}),
@@ -45,28 +45,51 @@ async function sendMail(mail: Mail): Promise<boolean> {
   }
 }
 
-/** 管理者通知。個人情報を必要以上に本文へ載せないよう、項目は最小限にしています。 */
+/**
+ * 採用ご担当者への申込み内容の転送。
+ *
+ * 宛先は ENTRY_NOTIFICATION_EMAIL に設定します（カンマ区切りで複数指定可）。
+ * 申込内容そのものを確認いただくための通知のため、入力項目をすべて記載します。
+ * 宛先を増やすほど個人情報の届く範囲が広がるため、必要な方だけを設定してください。
+ */
 export async function notifyAdmin(record: EntryRecord): Promise<boolean> {
-  const to = process.env.ENTRY_NOTIFICATION_EMAIL;
-  if (!to) return false;
+  const to = (process.env.ENTRY_NOTIFICATION_EMAIL ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+  if (to.length === 0) return false;
 
   const text = [
     'オープン・カンパニーの参加申込みがありました。',
     '',
     `受付番号：${record.receiptNumber}`,
     `申込日時：${record.submittedAtJst}（日本時間）`,
+    '',
+    '── 参加希望 ──',
     `参加希望日：${record.eventDateDisplay}`,
     `参加希望時間：${record.sessionLabel} ${record.sessionTime}`,
-    `氏名：${record.name}`,
-    `学校：${record.school}`,
     '',
-    '氏名フリガナ・連絡先・質問内容を含む詳細は、申込データの保存先をご確認ください。',
+    '── お申込者 ──',
+    `氏名：${record.name}`,
+    `フリガナ：${record.nameKana}`,
+    `学校名：${record.school}`,
+    `学部・学科：${record.faculty}`,
+    `卒業予定年月：${record.graduation}`,
+    `メールアドレス：${record.email}`,
+    `電話番号：${record.phone}`,
+    `本イベントを知ったきっかけ：${record.referral}`,
+    '',
+    '── ご質問・ご要望 ──',
+    record.question || '（記載なし）',
+    '',
+    `個人情報の取り扱いへの同意：${record.privacyAgreed ? '同意済み' : '未同意'}（${record.privacyAgreedAt}）`,
   ].join('\n');
 
   return sendMail({
     to,
-    subject: `【オープン・カンパニー】新規申込み ${record.receiptNumber}`,
+    subject: `【オープン・カンパニー】新規申込み ${record.receiptNumber}　${record.name} 様`,
     text,
+    replyTo: record.email,
   });
 }
 

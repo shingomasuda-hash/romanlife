@@ -73,7 +73,7 @@
        送信するデータの形は buildPayload() を参照してください。
        サーバー側でも必ず、締切・必須項目・値の妥当性を再検証してください。
      ----------------------------------------------------------------------- */
-  var ENTRY_API = null;          // 例: '/api/event-entry'
+  var ENTRY_API = '/api/event-entry';   // 同一オリジンの受け口へ送信します
   var PRIVACY_POLICY_URL = '';   // 例: 'https://www.romanlife.co.jp/privacy/'
 
   /* =======================================================================
@@ -428,28 +428,34 @@
       sessionId: d.session,
       sessionLabel: ses ? ses.label : '',
       sessionTime: ses ? ses.time : '',
+      // 受け口（/api/event-entry）の項目名に合わせる
+      name: (d.lastName + '　' + d.firstName).trim(),
+      nameKana: (d.lastKana + '　' + d.firstKana).trim(),
+      // 姓名を分けて保存したい場合のために、分割した値も送る
       lastName: d.lastName,
       firstName: d.firstName,
       lastKana: d.lastKana,
       firstKana: d.firstKana,
       school: d.school,
       faculty: d.faculty,
-      graduation: d.graduation === 'その他' ? 'その他（' + d.graduationOther + '）' : d.graduation,
+      graduation: d.graduation,
+      graduationOther: d.graduationOther,
       email: d.email,
       phone: normalizePhone(d.phone),
-      referral: d.referral === 'その他' ? 'その他（' + d.referralOther + '）' : d.referral,
+      referral: d.referral,
+      referralOther: d.referralOther,
       question: d.question,
       privacyAgreed: !!d.privacy,
       privacyAgreedAt: new Date().toISOString(),
-      companyName: d.companyName,   // ハニーポット（サーバー側で空であることを確認）
-      source: {
+      company: d.companyName,       // ハニーポット（サーバー側で空であることを確認）
+      tracking: {
         utm_source: p.get('utm_source') || '',
         utm_medium: p.get('utm_medium') || '',
         utm_campaign: p.get('utm_campaign') || '',
         utm_content: p.get('utm_content') || '',
         utm_term: p.get('utm_term') || '',
         referrer: document.referrer || '',
-        pageUrl: location.origin + location.pathname
+        landingPage: location.origin + location.pathname
       }
     };
   }

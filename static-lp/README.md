@@ -82,11 +82,24 @@ static-lp/
 `script.js` の先頭に設定箇所をまとめています。**ダミーの外部URLは設定していません。**
 
 ```js
-var ENTRY_API = null;          // 例: '/api/event-entry'
-var PRIVACY_POLICY_URL = '';   // 例: 'https://www.romanlife.co.jp/privacy/'
+var ENTRY_API = '/api/event-entry';   // 同一オリジンの受け口へ送信します
+var PRIVACY_POLICY_URL = '';          // 例: 'https://www.romanlife.co.jp/privacy/'
 ```
 
-- `ENTRY_API` が `null` のあいだは送信を行わず、確認画面から完了画面へ進むだけの動作になります。
+**申込内容の転送先**は、Vercel の環境変数で設定します（ソースコードには書きません）。
+
+| 環境変数 | 設定値 |
+| --- | --- |
+| `ENTRY_NOTIFICATION_EMAIL` | `saiyo@romanlife.co.jp,info@any-ware.jp`（カンマ区切りで複数可） |
+| `RESEND_API_KEY` | メール送信サービス（Resend）のAPIキー |
+| `ENTRY_FROM_EMAIL` | 送信元アドレス（独自ドメインの認証が必要です） |
+
+この3つが揃うと、申込みのたびに**フォームの入力内容がそのままメールで届きます**
+（差出人への返信ができるよう Reply-To に申込者のアドレスを入れています）。
+`RESEND_API_KEY` が未設定のあいだはメールは送られません（送っていないのに
+「送信しました」と表示しないようにしています）。データ自体は保存されます。
+
+- `ENTRY_API` を `null` に戻すと送信を行わず、確認画面から完了画面へ進むだけの動作になります。
 - URLを設定すると、`buildPayload()` が組み立てたJSONを `POST` します。
 - レスポンスは `{ "ok": true }` を成功とみなします。
   `{ "ok": true, "receiptNumber": "OC-260728-XXXXXX" }` を返すと、完了画面に受付番号を表示します。

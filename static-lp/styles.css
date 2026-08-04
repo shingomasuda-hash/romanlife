@@ -384,8 +384,7 @@ legend { padding: 0; }
 }
 
 /* ブランド表示（ロゴは公式のものを画像で配置。文字は加工しない） */
-.hero-top { display: grid; gap: 18px; margin-bottom: 22px; }
-.brandblock { text-align: center; }
+.brandblock { text-align: center; margin-bottom: 18px; }
 .bb-label {
   font-family: var(--mincho); font-weight: 600;
   font-size: clamp(13px, 3.5vw, 15px); letter-spacing: .12em;
@@ -602,11 +601,17 @@ legend { padding: 0; }
 
 /* ブランド表示と「2028 GRADUATES」を横並びにする */
 @media (min-width: 600px) {
-  .hero-top {
-    grid-template-columns: auto auto;
-    justify-content: start; align-items: center;
-    gap: 12px 32px;
+  .hero-copy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 32px;
   }
+  .brandblock { grid-column: 1; grid-row: 1; margin-bottom: 0; text-align: left; }
+  .hero-grad  { grid-column: 2; grid-row: 1; }
+  .hero-title { grid-column: 1 / -1; grid-row: 2; margin-top: 22px; }
+  .hero-sub   { grid-column: 1 / -1; grid-row: 3; }
+  .perk       { grid-column: 1 / -1; grid-row: 4; }
   .brandblock { text-align: left; }
   .bb-logo { margin-inline: 0; }
   .bb-conj { justify-content: flex-start; }
@@ -623,14 +628,27 @@ legend { padding: 0; }
   .hero-main { padding-top: 40px; padding-bottom: 32px; }
   .hero-band img { aspect-ratio: 16 / 7; object-position: 50% 46%; }
   .hero-title { font-size: clamp(40px, 5.2vw, 48px); }
-  .hero-copy { max-width: 620px; }
+  .hero-copy { max-width: 740px; }
   .hero-dates .wrap { padding-block: 6px 36px; }
   .hd-list { gap: 16px; }
   .hd-card { padding: 18px 20px 17px; }
   .hero-info .wrap { padding-block: 34px 38px; }
   .hero-cta-wrap { margin-top: 22px; }
 }
+/* PC：左にブランド・見出し・リード、右に「2028 GRADUATES」と特典枠を置く */
 @media (min-width: 900px) {
+  .hero-copy {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    align-items: start;
+    column-gap: 44px;
+  }
+  .brandblock { grid-column: 1; grid-row: 1; }
+  .hero-grad  { grid-column: 2; grid-row: 1; padding-top: 6px; }
+  .hero-title { grid-column: 1; grid-row: 2; }
+  .hero-sub   { grid-column: 1; grid-row: 3; }
+  .perk       { grid-column: 2; grid-row: 2 / span 2; margin-top: 34px; max-width: none; align-self: start; }
+  .hero-copy { max-width: 1000px; }
+
   .hero-cta-wrap { margin-top: 0; width: 340px; }
   .hero-info .wrap { display: grid; grid-template-columns: 1fr auto; gap: 20px 48px; align-items: center; }
   .hero-invite { text-align: left; }
@@ -638,7 +656,7 @@ legend { padding: 0; }
 }
 
 @media (min-width: 1100px) {
-  .hero-copy { max-width: 660px; }
+  .hero-copy { max-width: 1020px; }
   .hero-band img { aspect-ratio: 21 / 8; }
 }
 
@@ -936,7 +954,7 @@ legend { padding: 0; }
    ------------------------------------------------------------------------- */
 .talk { background: linear-gradient(180deg, #f5efe2, var(--ivory)); }
 .voices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
-.voice { position: relative; padding-top: 62px; }
+.voice { position: relative; }
 .bubble {
   position: absolute; top: 0; left: 0; right: 0;
   background: var(--ivory-soft); border: 1px solid rgba(184,149,74,.4);
