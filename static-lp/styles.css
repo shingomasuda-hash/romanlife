@@ -577,7 +577,7 @@ legend { padding: 0; }
 
 /* SP：縦に長くなりすぎないよう各要素を詰める（可読性は落とさない） */
 @media (max-width: 767px) {
-  .hero-top { gap: 12px; margin-bottom: 16px; }
+  .brandblock { margin-bottom: 16px; }
   .bb-label { margin-bottom: 7px; }
   .bb-logo-mb { width: min(50vw, 186px); }
   .bb-logo-rl { width: min(52vw, 192px); }
