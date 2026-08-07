@@ -23,13 +23,20 @@
  *    バージョン「新バージョン」で再デプロイしてください（URLは変わりません）。
  */
 
-/** ★ 追記先のスプレッドシートID */
+/**
+ * ★ 追記先のスプレッドシートID。
+ * スプレッドシートの「拡張機能 → Apps Script」から作った場合は、
+ * 空のままで構いません（そのスプレッドシートへ書き込みます）。
+ */
 var SHEET_ID = '';
 
 /** ★ 合言葉。ENTRY_WEBHOOK_URL の ?token= と同じ値にする */
 var TOKEN = '';
 
-/** シート名（存在しなければ自動で作成します） */
+/**
+ * 追記先のシート（タブ）名。存在しなければ自動で作成します。
+ * 既存のタブへ書き込みたい場合は、そのタブ名に変えてください。
+ */
 var SHEET_NAME = '申込一覧';
 
 var HEADERS = [
@@ -84,7 +91,13 @@ function doPost(e) {
 }
 
 function getSheet() {
-  var book = SpreadsheetApp.openById(SHEET_ID);
+  // SHEET_ID 未設定なら、このスクリプトが紐づくスプレッドシートを使う
+  var book = SHEET_ID
+    ? SpreadsheetApp.openById(SHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
+  if (!book) {
+    throw new Error('スプレッドシートが見つかりません。SHEET_ID を設定してください。');
+  }
   var sheet = book.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = book.insertSheet(SHEET_NAME);
@@ -112,4 +125,27 @@ function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+/**
+ * 動作確認用。Apps Script エディタ上でこの関数を実行すると、
+ * テスト用の1行が追記されます（確認後は行を削除してください）。
+ * LPから送信しなくても、シートの作成と書き込み権限を確かめられます。
+ */
+function テスト実行() {
+  var sheet = getSheet();
+  var now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
+  sheet.appendRow([
+    now, 'TEST-0001', '（テスト）2026年8月11日（火）', '午前の部 10:00〜13:00',
+    'テスト　太郎', 'テスト　タロウ', 'テスト大学', 'テスト学部',
+    '2028年3月卒業予定', 'test@example.com', "'09000000000",
+    'テスト', 'これはテスト行です。確認後は削除してください。',
+    '同意済み', now,
+    '', '', '', '', '', '', '', 'test-' + now,
+  ]);
+  SpreadsheetApp.getUi
+    ? null
+    : null;
+  Logger.log('テスト行を追記しました。シートを確認してください。');
 }
