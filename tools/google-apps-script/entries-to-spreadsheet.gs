@@ -64,6 +64,22 @@ var MY_EMAIL = '';
  */
 var USE_GMAIL_APP = true;
 
+/**
+ * 申込者へ受付完了メール（自動返信）を送るかどうか。
+ * false にすると、担当者への通知だけになります。
+ */
+var AUTO_REPLY = true;
+
+/** 自動返信の署名・問い合わせ先 */
+var REPLY_TO_ADDRESS = 'saiyo@romanlife.co.jp';
+var SIGNATURE = [
+  '━━━━━━━━━━━━━━━━━━━━',
+  '株式会社ロマンライフ 採用担当',
+  '〒607-8134 京都府京都市山科区大塚北溝町30',
+  'マールブランシュ ロマンの森 2階',
+  '━━━━━━━━━━━━━━━━━━━━',
+].join('\n');
+
 var HEADERS = [
   '受付日時', '受付番号', '参加希望日', '参加希望時間',
   '氏名', 'フリガナ', '学校名', '学部・学科', '卒業予定年月',
@@ -213,6 +229,47 @@ function sendNotification(data) {
   });
 }
 
+/** 申込者へ受付完了メールを送る */
+function sendAutoReply(data) {
+  if (!AUTO_REPLY || !data.email) return;
+  if (!/^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(data.email)) return;
+
+  var body = [
+    (data.name || '') + ' 様', '',
+    'この度は、株式会社ロマンライフのオープン・カンパニーへ',
+    'お申し込みいただき、ありがとうございます。',
+    '下記の内容で受け付けいたしました。', '',
+    '── お申し込み内容 ──',
+    '受付番号：' + (data.receiptNumber || ''),
+    '参加希望日：' + (data.eventDateDisplay || ''),
+    '参加希望時間：' + [data.sessionLabel, data.sessionTime].filter(String).join(' '),
+    '会場：株式会社ロマンライフ 本社',
+    '　　　マールブランシュ ロマンの森 2階',
+    '　　　京都府京都市山科区大塚北溝町30', '',
+    '── ご入力内容 ──',
+    'お名前：' + (data.name || '') + '（' + (data.nameKana || '') + '）',
+    '学校名：' + (data.school || ''),
+    '学部・学科：' + (data.faculty || ''),
+    '卒業予定年月：' + (data.graduation || ''),
+    'メールアドレス：' + (data.email || ''),
+    '電話番号：' + (data.phone || ''), '',
+    '当日の持ち物は筆記用具です。服装の指定はございませんので、',
+    '過ごしやすい自由な服装でお越しください。',
+    '受付場所など当日の詳細は、あらためてご案内いたします。', '',
+    'ご不明な点がございましたら、このメールへご返信ください。',
+    'お会いできることを楽しみにしております。', '',
+    SIGNATURE,
+  ].join('\n');
+
+  var options = { name: '株式会社ロマンライフ 採用担当', replyTo: REPLY_TO_ADDRESS };
+  if (USE_GMAIL_APP) {
+    GmailApp.sendEmail(data.email, '【株式会社ロマンライフ】オープン・カンパニー参加申込みを受け付けました', body, options);
+  } else {
+    MailApp.sendEmail(data.email, '【株式会社ロマンライフ】オープン・カンパニー参加申込みを受け付けました', body, options);
+  }
+  Logger.log('自動返信を送信しました → ' + data.email);
+}
+
 function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
@@ -254,6 +311,20 @@ function testMail() {
     privacyAgreed: true, privacyAgreedAt: '',
   });
   Logger.log('テストメールを送信しました：' + NOTIFY_TO);
+}
+
+/** 自動返信だけを確認したいときに実行します（MY_EMAIL 宛） */
+function testAutoReply() {
+  if (!MY_EMAIL) { Logger.log('MY_EMAIL を設定してから実行してください。'); return; }
+  sendAutoReply({
+    receiptNumber: 'TEST-0001',
+    eventDateDisplay: '（テスト）2026年8月11日（火）',
+    sessionLabel: '午前の部', sessionTime: '10:00〜13:00',
+    name: 'テスト　太郎', nameKana: 'テスト　タロウ',
+    school: 'テスト大学', faculty: 'テスト学部',
+    graduation: '2028年3月卒業予定',
+    email: MY_EMAIL, phone: '09000000000',
+  });
 }
 
 /**
