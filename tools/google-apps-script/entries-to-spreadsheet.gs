@@ -133,7 +133,7 @@ function json(obj) {
  * テスト用の1行が追記されます（確認後は行を削除してください）。
  * LPから送信しなくても、シートの作成と書き込み権限を確かめられます。
  */
-function テスト実行() {
+function testAppend() {
   var sheet = getSheet();
   var now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
   sheet.appendRow([
@@ -144,8 +144,15 @@ function テスト実行() {
     '同意済み', now,
     '', '', '', '', '', '', '', 'test-' + now,
   ]);
-  SpreadsheetApp.getUi
-    ? null
-    : null;
-  Logger.log('テスト行を追記しました。シートを確認してください。');
+  Logger.log('テスト行を追記しました。「' + SHEET_NAME + '」シートを確認してください。');
+}
+
+/**
+ * ブラウザで /exec を開いたときの応答。
+ * デプロイが生きているかの確認用で、データは一切返しません。
+ */
+function doGet() {
+  return ContentService
+    .createTextOutput('OK: 申込データの受け口は動作しています。')
+    .setMimeType(ContentService.MimeType.TEXT);
 }
