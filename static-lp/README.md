@@ -229,7 +229,7 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 | --- | --- |
 | 上部の帯「2028年卒対象／採用説明会・オープン・カンパニー」 | HTML＋CSS（`.hero-ribbon`） |
 | 「株式会社ロマンライフ」「が展開する」「京都洋菓子ブランド」 | HTMLテキスト |
-| MALEBRANCHE ／ ROMANLIFE のロゴ | **画像**（`assets/images/logo-*.png`） |
+| MALEBRANCHE ／ ROMANLIFE のロゴ | **画像**（ご支給の公式データ。`assets/images/logo-*.png`） |
 | 「2028 GRADUATES」 | HTMLテキスト＋CSS（`.hero-grad`） |
 | 見出し・リード文 | HTMLテキスト |
 | 「参加者限定 特別選考ルートをご案内」の枠 | HTML＋CSS＋SVG（王冠・月桂樹） |
@@ -239,11 +239,16 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 
 ### ロゴの扱い
 
-`logo-malebranche.png` / `logo-romanlife.png` は、ご支給画像から該当箇所を切り出し、
-**周囲の明るい背景のみを透明化**したものです。ロゴの形・色・字間は変更していません。
+いただいた公式データをそのまま使用しています。
 
-ただし元が写真上のラスター画像のため、拡大するとエッジが甘くなります。
-**公式のロゴデータ（SVG または背景透明のPNG）をいただければ差し替えます。**
+| ファイル | 元データ | 処理 |
+| --- | --- | --- |
+| `logo-romanlife.png` | `romanlife_logo_Rwhite.png` | **無加工**（背景透過のPNGをそのままコピー） |
+| `logo-malebranche.png` | `マールブランシュ ロゴ.jpg` | CMYKのJPGのため、**白背景のみを透明化**してPNG化。ロゴの線・字間は変更していません |
+
+`マールブランシュ ロゴ.jpg` は背景が白のJPGです。ページの背景はアイボリー（`#F8F3E8`）のため、
+そのまま置くと白い四角が浮いて見えます。**ロゴそのものには一切手を加えず**、周囲の
+白い面だけを透明にしています。背景透過のPNGまたはSVGをいただければ、そちらへ差し替えます。
 
 ### FV写真の切り出し範囲
 
@@ -324,7 +329,7 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 | `company-case.webp` | SECTION 05 小さい写真 | `ロマンの森_内観_ショーケース2.jpg` |
 | `career-staff.webp` | SECTION 06 キャリア | `M_2024_kamikatsura_57_s.jpg` |
 | `career-handover.webp` | SECTION 07 ひとつのお菓子を届けるまで | `M_2024_kamikatsura_73_s.jpg` |
-| `voice-01/02/03.webp` | SECTION 08 従業員インタビュー | `HP船木さん2.jpg`／`240208romanlife169.jpg`／`大塚さん.JPG` |
+| `voices.webp` | SECTION 08 座談会 | `【★座談会写真希望】20240110roman171.jpg` |
 | `access-store.webp` | 会場アクセス | `ロマンの森_外観.jpg` |
 
 **AI生成画像は残っていません。** `alt` もすべて実際の写真の内容へ書き換えています。
@@ -334,8 +339,8 @@ source{ utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer, p
 `HP船木さん＆西川さん2.jpg`／`HP船木さん(喫茶).jpg`／`M_2021_JRrm_086_s.jpg`／
 `ロマンの森スタッフ_1.jpg`。差し替えのご希望があればお知らせください。
 
-> 座談会の3枚目は `大塚さん.JPG` を使っています（吹き出しに顔がかからないよう、
-> お客さま役が画角に入らない範囲で切り出しています）。
+> 座談会は、私服のスタッフ3名が並んだ写真1枚に差し替えました（`voices.webp`）。
+> 各写真に重ねていた吹き出しは、下の質問一覧と重複するため削除しています。
 
 ### いただけていない素材
 
