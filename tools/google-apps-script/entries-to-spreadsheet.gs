@@ -182,13 +182,21 @@ function sendNotification(data) {
   if (data.email && /^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(data.email)) {
     options.replyTo = data.email;
   }
-  MailApp.sendEmail(
-    NOTIFY_TO,
-    '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
-      '　' + (data.name || '') + ' 様',
-    body,
-    options
-  );
+  var subject = '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
+    '　' + (data.name || '') + ' 様';
+
+  // 宛先ごとに送る。1件失敗しても他の宛先には届くようにし、
+  // どこで失敗したかを実行ログに残す。
+  NOTIFY_TO.split(',').forEach(function (to) {
+    to = to.trim();
+    if (!to) return;
+    try {
+      MailApp.sendEmail(to, subject, body, options);
+      Logger.log('送信しました → ' + to);
+    } catch (err) {
+      Logger.log('送信に失敗 → ' + to + ' : ' + err);
+    }
+  });
 }
 
 function json(obj) {
