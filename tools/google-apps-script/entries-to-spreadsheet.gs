@@ -54,6 +54,16 @@ var NOTIFY_TO = 'saiyo@romanlife.co.jp,info@any-ware.jp';
  */
 var MY_EMAIL = '';
 
+/**
+ * true にすると GmailApp で送信します（false は MailApp）。
+ *
+ * GmailApp は Gmail から出した通常のメールと同じ扱いになるため、
+ *   ・Gmailの「送信済み」に残る（本当に送られたか確認できる）
+ *   ・受信側で迷惑メール判定されにくい
+ * という利点があります。初回はGmailへのアクセス許可を求められます。
+ */
+var USE_GMAIL_APP = true;
+
 var HEADERS = [
   '受付日時', '受付番号', '参加希望日', '参加希望時間',
   '氏名', 'フリガナ', '学校名', '学部・学科', '卒業予定年月',
@@ -191,7 +201,11 @@ function sendNotification(data) {
     to = to.trim();
     if (!to) return;
     try {
-      MailApp.sendEmail(to, subject, body, options);
+      if (USE_GMAIL_APP) {
+        GmailApp.sendEmail(to, subject, body, options);
+      } else {
+        MailApp.sendEmail(to, subject, body, options);
+      }
       Logger.log('送信しました → ' + to);
     } catch (err) {
       Logger.log('送信に失敗 → ' + to + ' : ' + err);
