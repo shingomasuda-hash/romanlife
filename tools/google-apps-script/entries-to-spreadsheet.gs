@@ -39,6 +39,15 @@ var TOKEN = '';
  */
 var SHEET_NAME = '申込一覧';
 
+/**
+ * ★ 申込内容の通知先メールアドレス。カンマ区切りで複数指定できます。
+ * 空にするとメールは送りません（スプレッドシートへの追記だけ行います）。
+ *
+ * 送信元は、このスクリプトを実行しているGoogleアカウントのアドレスになります。
+ * 1日の送信上限は 100通（Gmail個人）／1,500通（Google Workspace）です。
+ */
+var NOTIFY_TO = 'saiyo@romanlife.co.jp,info@any-ware.jp';
+
 var HEADERS = [
   '受付日時', '受付番号', '参加希望日', '参加希望時間',
   '氏名', 'フリガナ', '学校名', '学部・学科', '卒業予定年月',
@@ -83,6 +92,13 @@ function doPost(e) {
       src.referrer || '', src.landingPage || '',
       data.submissionId || '',
     ]);
+
+    // メール通知（失敗しても記録は残るよう、ここでは処理を止めない）
+    try {
+      sendNotification(data);
+    } catch (mailErr) {
+      Logger.log('メール送信に失敗しました: ' + mailErr);
+    }
     return json({ ok: true });
   } catch (err) {
     // 失敗をLP側へ伝えるため、200で ok:false を返さずエラーとして扱う
@@ -121,6 +137,49 @@ function isDuplicate(sheet, submissionId) {
   return false;
 }
 
+/** 申込内容を担当者へメールで送る */
+function sendNotification(data) {
+  if (!NOTIFY_TO) return;
+  var body = [
+    'オープン・カンパニーの参加申込みがありました。',
+    '',
+    '受付番号：' + (data.receiptNumber || ''),
+    '申込日時：' + (data.submittedAtJst || '') + '（日本時間）',
+    '',
+    '── 参加希望 ──',
+    '参加希望日：' + (data.eventDateDisplay || ''),
+    '参加希望時間：' + [data.sessionLabel, data.sessionTime].filter(String).join(' '),
+    '',
+    '── お申込者 ──',
+    '氏名：' + (data.name || ''),
+    'フリガナ：' + (data.nameKana || ''),
+    '学校名：' + (data.school || ''),
+    '学部・学科：' + (data.faculty || ''),
+    '卒業予定年月：' + (data.graduation || ''),
+    'メールアドレス：' + (data.email || ''),
+    '電話番号：' + (data.phone || ''),
+    '知ったきっかけ：' + (data.referral || ''),
+    '',
+    '── ご質問・ご要望 ──',
+    data.question || '（記載なし）',
+    '',
+    '── 個人情報の取り扱い ──',
+    (data.privacyAgreed ? '同意済み' : '未同意') + '（' + (data.privacyAgreedAt || '') + '）',
+    '',
+    '※このメールは申込フォームから自動送信されています。',
+    '　一覧はスプレッドシートをご確認ください。',
+  ].join('\n');
+
+  MailApp.sendEmail({
+    to: NOTIFY_TO,
+    subject: '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
+             '　' + (data.name || '') + ' 様',
+    body: body,
+    replyTo: data.email || undefined,
+    name: 'ロマンライフ 申込フォーム',
+  });
+}
+
 function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
@@ -145,6 +204,23 @@ function testAppend() {
     '', '', '', '', '', '', '', 'test-' + now,
   ]);
   Logger.log('テスト行を追記しました。「' + SHEET_NAME + '」シートを確認してください。');
+}
+
+/** メール送信だけを確認したいときに実行します */
+function testMail() {
+  sendNotification({
+    receiptNumber: 'TEST-0001',
+    submittedAtJst: Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss'),
+    eventDateDisplay: '（テスト）2026年8月11日（火）',
+    sessionLabel: '午前の部', sessionTime: '10:00〜13:00',
+    name: 'テスト　太郎', nameKana: 'テスト　タロウ',
+    school: 'テスト大学', faculty: 'テスト学部',
+    graduation: '2028年3月卒業予定',
+    email: 'test@example.com', phone: '09000000000',
+    referral: 'テスト', question: 'これはテスト送信です。',
+    privacyAgreed: true, privacyAgreedAt: '',
+  });
+  Logger.log('テストメールを送信しました：' + NOTIFY_TO);
 }
 
 /**
