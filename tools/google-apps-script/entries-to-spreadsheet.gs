@@ -48,6 +48,12 @@ var SHEET_NAME = '申込一覧';
  */
 var NOTIFY_TO = 'saiyo@romanlife.co.jp,info@any-ware.jp';
 
+/**
+ * 動作確認用の自分の受信アドレス（testMailSelf / checkMail で使用）。
+ * 本番の動作には影響しません。
+ */
+var MY_EMAIL = '';
+
 var HEADERS = [
   '受付日時', '受付番号', '参加希望日', '参加希望時間',
   '氏名', 'フリガナ', '学校名', '学部・学科', '卒業予定年月',
@@ -170,14 +176,19 @@ function sendNotification(data) {
     '　一覧はスプレッドシートをご確認ください。',
   ].join('\n');
 
-  MailApp.sendEmail({
-    to: NOTIFY_TO,
-    subject: '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
-             '　' + (data.name || '') + ' 様',
-    body: body,
-    replyTo: data.email || undefined,
-    name: 'ロマンライフ 申込フォーム',
-  });
+  var options = { name: 'ロマンライフ 申込フォーム' };
+  // 申込者のアドレスが妥当なときだけ Reply-To を付ける
+  // （届かないアドレスを入れると迷惑メール判定されやすいため）
+  if (data.email && /^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(data.email)) {
+    options.replyTo = data.email;
+  }
+  MailApp.sendEmail(
+    NOTIFY_TO,
+    '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
+      '　' + (data.name || '') + ' 様',
+    body,
+    options
+  );
 }
 
 function json(obj) {
@@ -216,11 +227,39 @@ function testMail() {
     name: 'テスト　太郎', nameKana: 'テスト　タロウ',
     school: 'テスト大学', faculty: 'テスト学部',
     graduation: '2028年3月卒業予定',
-    email: 'test@example.com', phone: '09000000000',
+    email: '', phone: '09000000000',
     referral: 'テスト', question: 'これはテスト送信です。',
     privacyAgreed: true, privacyAgreedAt: '',
   });
   Logger.log('テストメールを送信しました：' + NOTIFY_TO);
+}
+
+/**
+ * メールが届かないときの切り分け用。
+ * 送信元アカウント・残り送信可能数・宛先を実行ログへ出します。
+ */
+function checkMail() {
+  Logger.log('送信元アカウント：' + Session.getActiveUser().getEmail());
+  Logger.log('本日あと送れる通数：' + MailApp.getRemainingDailyQuota());
+  Logger.log('通知先（NOTIFY_TO）：' + NOTIFY_TO);
+  Logger.log('確認用アドレス（MY_EMAIL）：' + (MY_EMAIL || '未設定'));
+}
+
+/**
+ * 自分宛だけに、余計な要素を省いたテキストメールを送ります。
+ * これが届けば送信機能は正常で、原因は受信側の振り分けにあります。
+ */
+function testMailSelf() {
+  if (!MY_EMAIL) {
+    Logger.log('MY_EMAIL に自分の受信アドレスを設定してから実行してください。');
+    return;
+  }
+  MailApp.sendEmail(
+    MY_EMAIL,
+    'テスト送信 ' + Utilities.formatDate(new Date(), 'Asia/Tokyo', 'HH:mm:ss'),
+    'Apps Script からのテスト送信です。これが届けば、メール送信の設定は正常です。'
+  );
+  Logger.log(MY_EMAIL + ' へ送信しました。受信トレイと迷惑メールを確認してください。');
 }
 
 /**
