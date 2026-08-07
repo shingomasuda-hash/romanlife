@@ -90,7 +90,7 @@ var PRIVACY_POLICY_URL = '';          // 例: 'https://www.romanlife.co.jp/priva
 
 | 環境変数 | 設定値 |
 | --- | --- |
-| `ENTRY_NOTIFICATION_EMAIL` | `saiyo@romanlife.co.jp,info@any-ware.jp`（カンマ区切りで複数可） |
+| `ENTRY_NOTIFICATION_EMAIL` | `saiyo@romanlife.co.jp,shingo.masuda@any-ware.jp`（カンマ区切りで複数可） |
 | `RESEND_API_KEY` | メール送信サービス（Resend）のAPIキー |
 | `ENTRY_FROM_EMAIL` | 送信元アドレス（独自ドメインの認証が必要です） |
 

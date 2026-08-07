@@ -46,7 +46,7 @@ var SHEET_NAME = '申込一覧';
  * 送信元は、このスクリプトを実行しているGoogleアカウントのアドレスになります。
  * 1日の送信上限は 100通（Gmail個人）／1,500通（Google Workspace）です。
  */
-var NOTIFY_TO = 'saiyo@romanlife.co.jp,info@any-ware.jp';
+var NOTIFY_TO = 'saiyo@romanlife.co.jp,shingo.masuda@any-ware.jp';
 
 /**
  * 動作確認用の自分の受信アドレス（testMailSelf / checkMail で使用）。
