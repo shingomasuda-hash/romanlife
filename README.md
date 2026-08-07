@@ -27,6 +27,20 @@ npm run typecheck              # 型チェック
    - 最低限、`NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_PRIVACY_POLICY_URL` / `ENTRY_WEBHOOK_URL` の3つ
 3. Deploy
 
+### 申込データをスプレッドシートへ自動追記する
+
+`tools/google-apps-script/entries-to-spreadsheet.gs` を Google Apps Script に貼り付け、
+ウェブアプリとしてデプロイし、そのURLを `ENTRY_WEBHOOK_URL` に設定すると、
+**申込みのたびにスプレッドシートへ1行ずつ追記**されます。
+設置手順はスクリプト冒頭のコメントに記載しています。
+
+メール本文の解析ではなく、フォームの送信データをそのままJSONで受け取るため、
+文面の変更や改行位置の影響を受けません。同じ送信IDの行は追記しないようにしているので、
+再送信や再試行があっても重複しません。
+
+メール通知（`ENTRY_NOTIFICATION_EMAIL`）とは独立して動くため、
+**両方を同時に有効にできます**（担当者へメール＋スプレッドシートへ蓄積）。
+
 > Vercel のファイルシステムは読み取り専用のため、申込データの恒久保存には
 > `ENTRY_WEBHOOK_URL` を設定してください（未設定でも一時領域へは書き込まれますが、
 > 再デプロイで消えます）。
