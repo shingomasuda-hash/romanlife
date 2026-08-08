@@ -127,10 +127,17 @@ function doPost(e) {
     ]);
 
     // メール通知（失敗しても記録は残るよう、ここでは処理を止めない）
+    // 担当者への通知と申込者への受付完了メールは別々に try で囲み、
+    // 片方が失敗しても、もう片方は必ず送られるようにする。
     try {
       sendNotification(data);
     } catch (mailErr) {
-      Logger.log('メール送信に失敗しました: ' + mailErr);
+      Logger.log('担当者への通知メールに失敗しました: ' + mailErr);
+    }
+    try {
+      sendAutoReply(data);
+    } catch (replyErr) {
+      Logger.log('申込者への受付完了メールに失敗しました: ' + replyErr);
     }
     return json({ ok: true });
   } catch (err) {
@@ -326,6 +333,49 @@ function testAutoReply() {
     graduation: '2028年3月卒業予定',
     email: MY_EMAIL, phone: '09000000000',
   });
+}
+
+/**
+ * ★ 最終確認用。LPからの申込みとまったく同じ処理（doPost）を実行します。
+ *
+ * 実行すると、次の3つがまとめて確認できます。
+ *   1. シートに1行追記されるか
+ *   2. 担当者（NOTIFY_TO）へ通知メールが届くか
+ *   3. 申込者（MY_EMAIL）へ受付完了メールが届くか
+ *
+ * MY_EMAIL を自分の受信アドレスにしてから実行してください。
+ * 確認が終わったら、追記されたテスト行を削除してください。
+ */
+function testFullFlow() {
+  if (!TOKEN) { Logger.log('TOKEN を設定してから実行してください。'); return; }
+  if (!MY_EMAIL) { Logger.log('MY_EMAIL に自分の受信アドレスを設定してから実行してください。'); return; }
+
+  var now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
+  var payload = {
+    receiptNumber: 'TEST-FLOW',
+    submissionId: 'test-flow-' + now,
+    submittedAtJst: now,
+    eventDateDisplay: '（テスト）2026年8月31日（月）',
+    sessionLabel: '午前の部', sessionTime: '10:00〜13:00',
+    name: 'テスト　太郎', nameKana: 'テスト　タロウ',
+    school: 'テスト大学', faculty: 'テスト学部',
+    graduation: '2028年3月卒業予定',
+    email: MY_EMAIL, phone: '09000000000',
+    referral: 'テスト', question: 'これは最終確認用のテスト送信です。',
+    privacyAgreed: true, privacyAgreedAt: now,
+    source: {},
+  };
+
+  var res = doPost({
+    parameter: { token: TOKEN },
+    postData: { contents: JSON.stringify(payload) },
+  });
+
+  Logger.log('doPost の応答：' + res.getContent());
+  Logger.log('確認1：「' + SHEET_NAME + '」シートにテスト行が追記されているか');
+  Logger.log('確認2：担当者宛（' + NOTIFY_TO + '）に通知メールが届いたか');
+  Logger.log('確認3：申込者宛（' + MY_EMAIL + '）に受付完了メールが届いたか');
+  Logger.log('確認後、追記されたテスト行は削除してください。');
 }
 
 /**
