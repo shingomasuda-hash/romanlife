@@ -14,7 +14,7 @@ export function Header() {
           <p className={styles.meta}>
             <Icon name="calendar" size={16} className={styles.metaIcon} />
             <span>
-              8月11日（火）・8月31日（月）<span aria-hidden="true">／</span>
+              8月31日（月）・9月4日（金）<span aria-hidden="true">／</span>
               <span className="visually-hidden">、</span>京都本社
             </span>
           </p>

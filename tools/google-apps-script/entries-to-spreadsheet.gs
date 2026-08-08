@@ -287,7 +287,7 @@ function testAppend() {
   var sheet = getSheet();
   var now = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
   sheet.appendRow([
-    now, 'TEST-0001', '（テスト）2026年8月11日（火）', '午前の部 10:00〜13:00',
+    now, 'TEST-0001', '（テスト）2026年8月31日（月）', '午前の部 10:00〜13:00',
     'テスト　太郎', 'テスト　タロウ', 'テスト大学', 'テスト学部',
     '2028年3月卒業予定', 'test@example.com', "'09000000000",
     'テスト', 'これはテスト行です。確認後は削除してください。',
@@ -302,7 +302,7 @@ function testMail() {
   sendNotification({
     receiptNumber: 'TEST-0001',
     submittedAtJst: Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss'),
-    eventDateDisplay: '（テスト）2026年8月11日（火）',
+    eventDateDisplay: '（テスト）2026年8月31日（月）',
     sessionLabel: '午前の部', sessionTime: '10:00〜13:00',
     name: 'テスト　太郎', nameKana: 'テスト　タロウ',
     school: 'テスト大学', faculty: 'テスト学部',
@@ -319,7 +319,7 @@ function testAutoReply() {
   if (!MY_EMAIL) { Logger.log('MY_EMAIL を設定してから実行してください。'); return; }
   sendAutoReply({
     receiptNumber: 'TEST-0001',
-    eventDateDisplay: '（テスト）2026年8月11日（火）',
+    eventDateDisplay: '（テスト）2026年8月31日（月）',
     sessionLabel: '午前の部', sessionTime: '10:00〜13:00',
     name: 'テスト　太郎', nameKana: 'テスト　タロウ',
     school: 'テスト大学', faculty: 'テスト学部',

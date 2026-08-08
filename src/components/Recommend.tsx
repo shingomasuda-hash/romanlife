@@ -72,7 +72,7 @@ export function Recommend() {
             <span className="phrase">まずは、</span>
             <span className="phrase">のぞきに来てください。</span>
           </p>
-          <CtaLink note="8/11・8/31 京都本社開催">参加希望日を選んで申し込む</CtaLink>
+          <CtaLink note="8/31・9/4 京都本社開催">参加希望日を選んで申し込む</CtaLink>
         </div>
       </div>
     </section>

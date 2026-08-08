@@ -13,22 +13,6 @@
      ======================================================================= */
   var EVENT_DATES = [
     {
-      id: '2026-08-11',
-      displayDate: '2026年8月11日（火）',
-      monthDay: '8月11日',
-      monthDayWeek: '8月11日（火）',
-      ymd: '2026.08.11',
-      weekday: 'TUE',
-      readable: '2026年8月11日 火曜日',
-      sessions: [
-        { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
-        { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
-      ],
-      deadline: '2026-08-10T12:00:00+09:00',
-      deadlineDisplay: '2026年8月10日（月）12:00',
-      deadlineShort: '8月10日（月）12:00'
-    },
-    {
       id: '2026-08-31',
       displayDate: '2026年8月31日（月）',
       monthDay: '8月31日',
@@ -516,7 +500,9 @@
           ng(json && json.message);
           return;
         }
-        if (json.receiptNumber) d.receiptNumber = json.receiptNumber;
+        // 受付番号は result 配下で返ります（旧形式のトップレベルにも念のため対応）
+        var receipt = (json.result && json.result.receiptNumber) || json.receiptNumber;
+        if (receipt) d.receiptNumber = receipt;
         ok();
       });
     }).catch(function () { ng(); });

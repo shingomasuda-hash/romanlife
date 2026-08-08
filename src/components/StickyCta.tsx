@@ -69,7 +69,7 @@ export function StickyCta() {
       aria-hidden={hidden || undefined}
     >
       <p className={styles.info}>
-        <span className={styles.infoEn}>8/11・8/31</span>
+        <span className={styles.infoEn}>8/31・9/4</span>
         <span className={styles.infoJa}>京都本社開催</span>
       </p>
       {allClosed ? (

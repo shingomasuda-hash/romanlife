@@ -439,7 +439,7 @@ legend { padding: 0; }
   font-size: clamp(27px, 7.4vw, 40px); line-height: 1.25; color: #fff; letter-spacing: .01em;
 }
 .hero-date small { font-size: .55em; }
-/* 「8/11（火）」の途中で改行させない */
+/* 「8/31（月）」の途中で改行させない */
 .hero-date b { font-weight: inherit; display: inline-block; white-space: nowrap; }
 .hero-place { font-family: var(--mincho); font-weight: 600; font-size: clamp(19px, 5.4vw, 26px); color: #fff; }
 .hero-cta-wrap { position: relative; margin-top: 24px; }

@@ -28,8 +28,8 @@ await page.goto(template, { waitUntil: 'networkidle' });
 await page.evaluate(async () => {
   await Promise.all([
     document.fonts.load("600 68px 'Shippori Mincho'", 'お菓子の先にあるしあわせを届ける仕事株式会社ロマンライフ'),
-    document.fonts.load("500 46px 'Cormorant Garamond'", '0123456789.TUEMON'),
-    document.fonts.load("700 26px 'Zen Kaku Gothic New'", '京都から心を動かす仕事を知る3時間年卒向け採用イベント月日火'),
+    document.fonts.load("500 46px 'Cormorant Garamond'", '0123456789.MONFRI'),
+    document.fonts.load("700 26px 'Zen Kaku Gothic New'", '京都から心を動かす仕事を知る3時間年卒向け採用イベント月日金'),
   ]);
   await document.fonts.ready;
 });

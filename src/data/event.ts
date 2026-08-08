@@ -21,9 +21,9 @@ export type EventDate = {
   id: string;
   date: string;
   displayDate: string;
-  /** 「2026年8月11日（火）」から年を除いた短縮表記 */
+  /** 「2026年8月31日（月）」から年を除いた短縮表記 */
   displayDateShort: string;
-  /** 曜日を含まない「8月11日」（ボタン文言などに使用） */
+  /** 曜日を含まない「8月31日」（ボタン文言などに使用） */
   monthDay: string;
   shortDate: string;
   weekday: string;
@@ -38,36 +38,6 @@ export type EventDate = {
 };
 
 export const EVENT_DATES: EventDate[] = [
-  {
-    id: '2026-08-11',
-    date: '2026-08-11',
-    displayDate: '2026年8月11日（火）',
-    displayDateShort: '8月11日（火）',
-    monthDay: '8月11日',
-    shortDate: '08.11',
-    weekday: 'TUE',
-    readableDate: '2026年8月11日 火曜日',
-    sessions: [
-      {
-        id: 'morning',
-        label: '午前の部',
-        time: '10:00〜13:00',
-        startTime: '2026-08-11T10:00:00+09:00',
-        endTime: '2026-08-11T13:00:00+09:00',
-      },
-      {
-        id: 'afternoon',
-        label: '午後の部',
-        time: '14:30〜17:30',
-        startTime: '2026-08-11T14:30:00+09:00',
-        endTime: '2026-08-11T17:30:00+09:00',
-      },
-    ],
-    deadline: '2026-08-11T00:00:00+09:00',
-    deadlineDisplay: '2026年8月11日（火）0:00',
-    deadlineDisplayShort: '8月11日（火）0:00',
-    deadlineNote: '開催日前日の深夜までにお申し込みください。',
-  },
   {
     id: '2026-08-31',
     date: '2026-08-31',
@@ -93,10 +63,40 @@ export const EVENT_DATES: EventDate[] = [
         endTime: '2026-08-31T17:30:00+09:00',
       },
     ],
-    deadline: '2026-08-31T00:00:00+09:00',
-    deadlineDisplay: '2026年8月31日（月）0:00',
-    deadlineDisplayShort: '8月31日（月）0:00',
-    deadlineNote: '開催日前日の深夜までにお申し込みください。',
+    deadline: '2026-08-30T12:00:00+09:00',
+    deadlineDisplay: '2026年8月30日（日）12:00',
+    deadlineDisplayShort: '8月30日（日）12:00',
+    deadlineNote: '開催日前日の12:00（正午）で受付を締め切ります。',
+  },
+  {
+    id: '2026-09-04',
+    date: '2026-09-04',
+    displayDate: '2026年9月4日（金）',
+    displayDateShort: '9月4日（金）',
+    monthDay: '9月4日',
+    shortDate: '09.04',
+    weekday: 'FRI',
+    readableDate: '2026年9月4日 金曜日',
+    sessions: [
+      {
+        id: 'morning',
+        label: '午前の部',
+        time: '10:00〜13:00',
+        startTime: '2026-09-04T10:00:00+09:00',
+        endTime: '2026-09-04T13:00:00+09:00',
+      },
+      {
+        id: 'afternoon',
+        label: '午後の部',
+        time: '14:30〜17:30',
+        startTime: '2026-09-04T14:30:00+09:00',
+        endTime: '2026-09-04T17:30:00+09:00',
+      },
+    ],
+    deadline: '2026-09-03T12:00:00+09:00',
+    deadlineDisplay: '2026年9月3日（木）12:00',
+    deadlineDisplayShort: '9月3日（木）12:00',
+    deadlineNote: '開催日前日の12:00（正午）で受付を締め切ります。',
   },
 ];
 
@@ -108,7 +108,7 @@ export const EVENT = {
   venue: {
     company: '株式会社ロマンライフ 本社',
     building: 'マールブランシュ ロマンの森 2階',
-    postalCode: '607-8326',
+    postalCode: '607-8134',
     address: '京都府京都市山科区大塚北溝町30',
     mapUrl:
       'https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E9%83%BD%E5%BA%9C%E4%BA%AC%E9%83%BD%E5%B8%82%E5%B1%B1%E7%A7%91%E5%8C%BA%E5%A4%A7%E5%A1%9A%E5%8C%97%E6%BA%9D%E7%94%BA30',

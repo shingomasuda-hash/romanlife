@@ -78,7 +78,7 @@ export function Access() {
         </div>
 
         <div className={styles.cta} data-reveal>
-          <CtaLink note="8/11・8/31 京都本社開催">参加希望日を選んで申し込む</CtaLink>
+          <CtaLink note="8/31・9/4 京都本社開催">参加希望日を選んで申し込む</CtaLink>
         </div>
       </div>
     </section>
