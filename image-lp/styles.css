@@ -53,7 +53,7 @@
   /* ---- Layout ------------------------------------------------------ */
   --wrap: 941px;
   --pad: 20px;
-  --sec-y: 76px;
+  --sec-y: 48px;
   --header-h: 60px;
   --sticky-h: 0px;
 
@@ -66,10 +66,10 @@
 }
 
 @media (min-width: 768px) {
-  :root { --pad: 32px; --sec-y: 104px; --header-h: 68px; }
+  :root { --pad: 32px; --sec-y: 68px; --header-h: 68px; }
 }
 @media (min-width: 1100px) {
-  :root { --sec-y: 128px; }
+  :root { --sec-y: 80px; }
 }
 
 /* -------------------------------------------------------------------------
@@ -140,7 +140,7 @@ legend { padding: 0; }
 /* -------------------------------------------------------------------------
    Section header（SECTION 0X / 明朝見出し / 英字 / 金の罫）
    ------------------------------------------------------------------------- */
-.sec-head { text-align: center; margin-bottom: 34px; }
+.sec-head { text-align: center; margin-bottom: 28px; }
 .sec-head.left { text-align: left; }
 
 .sec-no {
