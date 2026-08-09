@@ -55,6 +55,22 @@ var NOTIFY_TO = 'saiyo@romanlife.co.jp,shingo.masuda@any-ware.jp';
 var MY_EMAIL = '';
 
 /**
+ * ★ 差出人（送信元）として表示したいアドレス。
+ *
+ * 空にすると、スクリプトを実行しているGoogleアカウントのアドレスになります。
+ *
+ * ここに指定できるのは、実行アカウントの Gmail に
+ * 「設定 → アカウント → 他のメールアドレスを追加」で登録し、
+ * 確認コードの入力まで済ませたアドレスだけです。
+ * 未登録のアドレスを入れても差出人は変わりません（実行ログに理由を出します）。
+ *
+ * この指定は GmailApp を使うときだけ有効なため、
+ * 設定する場合は USE_GMAIL_APP = true にしてください。
+ * 使えるアドレスの一覧は checkFrom() で確認できます。
+ */
+var FROM_ADDRESS = '';
+
+/**
  * true にすると GmailApp で送信します（false は MailApp）。
  *
  * GmailApp は Gmailの「送信済み」に残る利点がありますが、
@@ -216,6 +232,8 @@ function sendNotification(data) {
   if (data.email && /^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(data.email)) {
     options.replyTo = data.email;
   }
+  var from = resolveFrom();
+  if (from) options.from = from;
   var subject = '【オープン・カンパニー】新規申込み ' + (data.receiptNumber || '') +
     '　' + (data.name || '') + ' 様';
 
@@ -270,12 +288,45 @@ function sendAutoReply(data) {
   ].join('\n');
 
   var options = { name: '株式会社ロマンライフ 採用担当', replyTo: REPLY_TO_ADDRESS };
+  var from = resolveFrom();
+  if (from) options.from = from;
   if (USE_GMAIL_APP) {
     GmailApp.sendEmail(data.email, '【株式会社ロマンライフ】オープン・カンパニー参加申込みを受け付けました', body, options);
   } else {
     MailApp.sendEmail(data.email, '【株式会社ロマンライフ】オープン・カンパニー参加申込みを受け付けました', body, options);
   }
   Logger.log('自動返信を送信しました → ' + data.email);
+}
+
+/**
+ * 差出人に指定できる状態かを確かめ、使えるときだけアドレスを返す。
+ * 使えないまま送ると差出人が変わらないだけなので、理由を実行ログに残す。
+ */
+var _fromResolved = false;
+var _fromUsable = '';
+function resolveFrom() {
+  if (_fromResolved) return _fromUsable;
+  _fromResolved = true;
+  _fromUsable = '';
+
+  if (!FROM_ADDRESS) return '';
+  if (!USE_GMAIL_APP) {
+    Logger.log('FROM_ADDRESS は GmailApp でのみ有効です。USE_GMAIL_APP = true にしてください。');
+    return '';
+  }
+  try {
+    var aliases = GmailApp.getAliases();
+    if (aliases.indexOf(FROM_ADDRESS) !== -1) {
+      _fromUsable = FROM_ADDRESS;
+    } else {
+      Logger.log('FROM_ADDRESS「' + FROM_ADDRESS + '」は差出人として使えません。' +
+        '実行アカウントのGmailで「他のメールアドレスを追加」から登録・確認してください。' +
+        '（現在使えるアドレス：' + (aliases.join(', ') || 'なし') + '）');
+    }
+  } catch (err) {
+    Logger.log('差出人の確認に失敗しました: ' + err);
+  }
+  return _fromUsable;
 }
 
 function json(obj) {
@@ -387,6 +438,27 @@ function checkMail() {
   Logger.log('本日あと送れる通数：' + MailApp.getRemainingDailyQuota());
   Logger.log('通知先（NOTIFY_TO）：' + NOTIFY_TO);
   Logger.log('確認用アドレス（MY_EMAIL）：' + (MY_EMAIL || '未設定'));
+}
+
+/**
+ * ★ 差出人（送信元）の設定を確認します。
+ * 実際に差出人として使えるアドレスの一覧を実行ログへ出します。
+ * FROM_ADDRESS を設定したら、まずこれを実行してください。
+ */
+function checkFrom() {
+  Logger.log('実行アカウント：' + Session.getActiveUser().getEmail());
+  Logger.log('FROM_ADDRESS の設定値：' + (FROM_ADDRESS || '未設定（実行アカウントのアドレスで送ります）'));
+  Logger.log('USE_GMAIL_APP：' + USE_GMAIL_APP + (USE_GMAIL_APP ? '' : '（false のあいだ FROM_ADDRESS は効きません）'));
+  try {
+    var aliases = GmailApp.getAliases();
+    Logger.log('差出人に使えるアドレス：' + (aliases.join(', ') || 'なし'));
+  } catch (err) {
+    Logger.log('一覧の取得に失敗しました（GmailApp の承認が必要です）: ' + err);
+  }
+  var from = resolveFrom();
+  Logger.log(from
+    ? '判定：この設定なら「' + from + '」が差出人になります。'
+    : '判定：差出人は実行アカウントのアドレスのままです。');
 }
 
 /**
