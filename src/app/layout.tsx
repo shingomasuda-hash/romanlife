@@ -25,6 +25,9 @@ const cormorant = Cormorant_Garamond({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
+/** Google Tag Manager のコンテナID。個別の計測タグは GTM の管理画面で設定します。 */
+const GTM_ID = 'GTM-TL5QK9DN';
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'ロマンライフ オープン・カンパニー2026｜2028年卒向け採用イベント',
@@ -139,21 +142,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" className={`${shipporiMincho.variable} ${cormorant.variable}`}>
       <head>
+        {/* Google Tag Manager（計測タグの管理は GTM 側で行います） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
         />
       </head>
       <body>
+        {/* Google Tag Manager（JavaScript が無効な環境向け） */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <RevealScript />
         <a href="#main" className="skip-link">
           本文へスキップ
         </a>
         {children}
-        {/*
-          Google Analytics / 広告計測タグはここに追加できます。
-          例）next/script で gtag.js を読み込み、tracking.ts の dataLayer と連携。
-        */}
       </body>
     </html>
   );
