@@ -584,6 +584,8 @@
             (d.receiptNumber ? '<div><dt>受付番号</dt><dd>' + esc(d.receiptNumber) + '</dd></div>' : '') +
           '</dl>' +
         '</div>' +
+        '<p class="done-mail">' + icon('mail', 17) +
+          '<span>ご入力いただいたメールアドレス宛に、受付完了メールをお送りしています。' + '数分経っても届かない場合は、迷惑メールフォルダをご確認ください。</span></p>' +
         '<p class="done-foot">当日お会いできることを、社員一同楽しみにしています。</p>' +
         '<div class="done-actions"><a class="btn btn-outline" href="#top">ページの先頭へ戻る</a></div>' +
       '</div>';

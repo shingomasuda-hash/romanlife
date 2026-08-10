@@ -1139,6 +1139,13 @@ legend { padding: 0; }
 .receipt div:last-child { border-bottom: 0; }
 .receipt dt { flex: none; font-size: 12.5px; color: var(--ink-mute); }
 .receipt dd { margin: 0; font-weight: 700; font-size: 14.5px; color: var(--green); text-align: right; overflow-wrap: anywhere; }
+.done-mail {
+  display: flex; align-items: flex-start; gap: 9px;
+  margin: 18px auto 0; max-width: 460px; padding: 13px 15px;
+  background: rgba(11,74,53,.05); border-radius: var(--r-s);
+  font-size: 13px; line-height: 1.8; color: var(--ink-soft); text-align: left;
+}
+.done-mail svg { flex: 0 0 auto; margin-top: 3px; color: var(--green); }
 .done-foot { margin-top: 22px; font-size: 13px; line-height: 1.85; color: var(--ink-mute); }
 .done-actions { margin-top: 24px; max-width: 320px; margin-inline: auto; }
 @media (max-width: 500px) { .receipt div { flex-direction: column; gap: 1px } .receipt dd { text-align: left } }
