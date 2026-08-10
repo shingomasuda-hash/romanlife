@@ -550,13 +550,16 @@
           esc(d.displayDate) + (c ? '（受付終了）' : '　／　' + d.deadlineShort + '締切') + '</option>';
       }).join('');
 
-    // プライバシーポリシーのリンク（未設定なら仮URLを置かない）
+    // プライバシーポリシーのリンク。
+    // URL が未設定のときは何も出しません。取り扱いの内容は上の枠内に
+    // 全文を記載しているため、リンクがなくても同意の判断ができます。
+    // （架空のURLは置かない方針）
     var slot = $('#policy-slot');
     if (PRIVACY_POLICY_URL) {
       slot.innerHTML = '<br><a href="' + esc(PRIVACY_POLICY_URL) + '" target="_blank" rel="noopener noreferrer">' +
         'プライバシーポリシーはこちら ' + icon('ext', 13) + '<span class="sr-only">（新しいタブで開きます）</span></a>';
     } else {
-      slot.innerHTML = '<span class="policy-missing">※プライバシーポリシーのリンク先URLは未設定です。公開前に script.js の PRIVACY_POLICY_URL を設定してください。</span>';
+      slot.innerHTML = '';
     }
 
     // 「その他」選択時の追加入力

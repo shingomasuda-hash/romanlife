@@ -695,12 +695,6 @@ export function EntryForm() {
                       <span className={styles.req} style={{ marginLeft: 8 }}>
                         必須
                       </span>
-                      {!PRIVACY_POLICY_URL ? (
-                        <span className={styles.policyMissing}>
-                          ※「個人情報の取り扱いについて」のリンク先URLは未設定です。公開前に環境変数
-                          NEXT_PUBLIC_PRIVACY_POLICY_URL を設定してください。
-                        </span>
-                      ) : null}
                     </span>
                   </label>
                   {errors.privacyAgreed ? (
