@@ -491,7 +491,6 @@ export function EntryForm() {
                   id="graduation"
                   label="卒業予定年月"
                   required
-                  help="本イベントは2028年卒業予定の方を対象としています。"
                   error={errors.graduation}
                 >
                   {({ describedBy, invalid }) => (
