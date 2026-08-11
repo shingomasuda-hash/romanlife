@@ -10,7 +10,7 @@ import { EMPTY_FORM, FIELD_LABELS, FIELD_ORDER, entrySchema, type EntryFormState
 import { useEntryStore } from '@/lib/entryStore';
 import { useDeadline } from '@/lib/useDeadline';
 import { prefersReducedMotion } from '@/lib/scroll';
-import { captureTracking, trackEvent, type Tracking } from '@/lib/tracking';
+import { captureTracking, trackEvent, trackPageView, type Tracking } from '@/lib/tracking';
 import styles from './EntryForm.module.css';
 
 type Step = 'input' | 'confirm' | 'complete';
@@ -146,6 +146,7 @@ export function EntryForm() {
       `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     setStep('confirm');
     trackEvent('form_confirm_view');
+    trackPageView('/entry/confirm', '入力内容の確認｜ロマンライフ 説明会・オープン・カンパニー');
     window.setTimeout(() => scrollFormTop(), 40);
   };
 
@@ -194,6 +195,7 @@ export function EntryForm() {
         eventDateId: data.result.eventDateId,
         sessionId: data.result.sessionId,
       });
+      trackPageView('/entry/complete', '申込完了｜ロマンライフ 説明会・オープン・カンパニー');
       window.setTimeout(() => scrollFormTop(), 40);
     } catch {
       setSendError('送信中に問題が発生しました。時間をおいて再度お試しください。');

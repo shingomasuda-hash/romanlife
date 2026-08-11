@@ -470,6 +470,7 @@
     function ok() {
       sending = false;
       track('entry_complete', { eventDateId: d.eventDate, sessionId: d.session });
+      trackPageView('/entry/complete', '申込完了｜ロマンライフ 説明会・オープン・カンパニー');
       renderDone(d);
       setStep('done');
       smoothTo(section, 'start');
@@ -601,6 +602,7 @@
       renderConfirm(d);
       setStep('confirm');
       track('form_confirm_view', {});
+      trackPageView('/entry/confirm', '入力内容の確認｜ロマンライフ 説明会・オープン・カンパニー');
       smoothTo(section, 'start');
     });
 
@@ -655,6 +657,22 @@
     var o = { event: name };
     for (var k in payload) if (Object.prototype.hasOwnProperty.call(payload, k)) o[k] = payload[k];
     window.dataLayer.push(o);
+  }
+
+  /**
+   * 仮想ページビュー。
+   *
+   * 入力→確認→完了は同じURLのまま画面だけが切り替わるため、
+   * このままでは計測ツールから「別のページ」として見えません。
+   * 各ステップで擬似的なページのアドレスとタイトルを通知し、
+   * タグマネージャー側でページビューとして扱えるようにします。
+   */
+  function trackPageView(path, title) {
+    track('virtual_pageview', {
+      pagePath: path,
+      pageTitle: title,
+      pageLocation: location.origin + path
+    });
   }
 
   function initCtaTracking() {

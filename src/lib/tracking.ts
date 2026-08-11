@@ -94,10 +94,28 @@ export type TrackEventName =
   | 'form_start'
   | 'form_confirm_view'
   | 'entry_complete'
-  | 'entry_error';
+  | 'entry_error'
+  | 'virtual_pageview';
 
 export function trackEvent(name: TrackEventName, payload: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: name, ...payload });
+}
+
+/**
+ * 仮想ページビュー。
+ *
+ * 入力→確認→完了は同じURLのまま画面だけが切り替わるため、
+ * このままでは計測ツールから「別のページ」として見えません。
+ * 各ステップで擬似的なページのアドレスとタイトルを通知し、
+ * タグマネージャー側でページビューとして扱えるようにします。
+ */
+export function trackPageView(path: string, title: string) {
+  if (typeof window === 'undefined') return;
+  trackEvent('virtual_pageview', {
+    pagePath: path,
+    pageTitle: title,
+    pageLocation: window.location.origin + path,
+  });
 }
