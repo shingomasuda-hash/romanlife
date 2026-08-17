@@ -15,6 +15,9 @@ const nextConfig = {
       // それらも合わせて /static-lp/ 配下へ向ける。
       beforeFiles: [
         { source: '/', destination: '/static-lp/index.html' },
+        // 申込完了（サンクス）ページ。計測ツールから独立したページとして扱えるよう、
+        // 専用のURLで配信します。
+        { source: '/thanks', destination: '/static-lp/thanks.html' },
         { source: '/styles.css', destination: '/static-lp/styles.css' },
         { source: '/script.js', destination: '/static-lp/script.js' },
         { source: '/assets/:path*', destination: '/static-lp/assets/:path*' },

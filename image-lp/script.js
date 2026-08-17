@@ -470,6 +470,37 @@
       '<p style="font-size:13.5px;line-height:1.8;color:var(--error)">入力内容は保持されていますので、そのまま再度お試しいただけます。</p></div>';
   }
 
+  /**
+   * 申込完了後、専用URLのサンクスページへ移動します。
+   *
+   * 申込内容は sessionStorage に一時保存して受け渡します。
+   * URLには氏名・メールアドレスなどを一切含めません
+   * （URLは共有・履歴・アクセスログに残るため）。
+   *
+   * 保存や移動ができない環境では false を返し、
+   * これまでどおりページ内で完了画面を表示します。
+   */
+  var THANKS_URL = '/thanks';
+  var THANKS_KEY = 'romanlife:entry:done';
+
+  function gotoThanks(d) {
+    if (!THANKS_URL) return false;
+    var date = getDate(d.eventDate);
+    var ses = date && date.sessions.filter(function (s) { return s.id === d.session; })[0];
+    try {
+      window.sessionStorage.setItem(THANKS_KEY, JSON.stringify({
+        receiptNumber: d.receiptNumber || '',
+        eventDateDisplay: date ? date.displayDate : '',
+        sessionDisplay: ses ? ses.label + '　' + ses.time : '',
+        name: (d.lastName + '　' + d.firstName).trim()
+      }));
+      window.location.assign(THANKS_URL);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function send(d) {
     if (sending) return;                       // 二重送信防止
     sending = true;
@@ -485,6 +516,7 @@
       sending = false;
       track('entry_complete', { eventDateId: d.eventDate, sessionId: d.session });
       trackPageView('/entry/complete', '申込完了｜ロマンライフ 説明会・オープン・カンパニー');
+      if (gotoThanks(d)) return;   // サンクスページへ移動できたときはここで終了
       renderDone(d);
       setStep('done');
       smoothTo(section, 'start');
