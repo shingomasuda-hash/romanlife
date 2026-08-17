@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Shippori_Mincho } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { RevealScript } from '@/components/RevealScript';
 import { EVENT, EVENT_DATES } from '@/data/event';
 import './globals.css';
@@ -172,6 +173,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           本文へスキップ
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
