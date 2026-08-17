@@ -402,6 +402,20 @@
     });
     var bar = $('#steps-bar');
     if (bar) bar.hidden = (step === 'closed');
+
+    // 画面の切り替わりをURLにも反映する。
+    // 入力→確認→完了はページ遷移をしないため、そのままではURLが変わらず、
+    // 計測ツールから「同じページ」にしか見えない。ハッシュだけを書き換えて
+    // 別ページとして扱えるようにする（再読み込みしても同じページに戻ります）。
+    // 履歴には積まないため、ブラウザの「戻る」の動きは変わりません。
+    var HASH = { confirm: '#entry-confirm', done: '#entry-complete' };
+    var next = HASH[step];
+    var ours = (location.hash === '#entry-confirm' || location.hash === '#entry-complete');
+    if ((next || ours) && window.history && history.replaceState) {
+      try {
+        history.replaceState(history.state, '', location.pathname + location.search + (next || ''));
+      } catch (e) { /* 対応していない環境では何もしません */ }
+    }
   }
 
   /* --- 確認画面 --- */
