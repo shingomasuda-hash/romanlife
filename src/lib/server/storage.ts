@@ -72,29 +72,76 @@ async function writeJsonl(record: EntryRecord): Promise<boolean> {
   }
 }
 
-async function postWebhook(record: EntryRecord): Promise<boolean> {
-  const url = process.env.ENTRY_WEBHOOK_URL;
-  if (!url) return false;
+/**
+ * 受け口へ1回だけ送信する。
+ *
+ * HTTPステータスが 200 でも成功とは限りません。
+ * Google Apps Script は合言葉が違うときや処理に失敗したときでも
+ * 200 で {"ok":false,...} を返し、アクセス権の設定が「全員」でない場合は
+ * ログイン用のHTMLを 200 で返します。ステータスだけを見ていると、
+ * 実際には1件も記録されていないのに成功として扱われてしまいます。
+ */
+async function postWebhookOnce(record: EntryRecord): Promise<{ ok: boolean; reason: string }> {
+  const url = process.env.ENTRY_WEBHOOK_URL!;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(process.env.ENTRY_WEBHOOK_SECRET
+        ? { Authorization: `Bearer ${process.env.ENTRY_WEBHOOK_SECRET}` }
+        : {}),
+    },
+    body: JSON.stringify(record),
+  });
+
+  if (!res.ok) return { ok: false, reason: `http_${res.status}` };
+
+  const text = (await res.text()).slice(0, 500);
+  let body: unknown;
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(process.env.ENTRY_WEBHOOK_SECRET
-          ? { Authorization: `Bearer ${process.env.ENTRY_WEBHOOK_SECRET}` }
-          : {}),
-      },
-      body: JSON.stringify(record),
-    });
-    return res.ok;
+    body = JSON.parse(text);
   } catch {
-    return false;
+    // JSON以外が返るのは、ログイン画面やエラーページが返っている場合。
+    // 受け口のURLとアクセス権（「全員」になっているか）を確認してください。
+    return { ok: false, reason: 'not_json' };
   }
+
+  const parsed = body as { ok?: unknown; message?: unknown };
+  if (parsed?.ok !== true) {
+    // 受け口が理由を返している場合はそのまま記録する（個人情報は含まれません）
+    const message = typeof parsed?.message === 'string' ? parsed.message : 'unknown';
+    return { ok: false, reason: `rejected:${message}` };
+  }
+  return { ok: true, reason: 'ok' };
+}
+
+async function postWebhook(record: EntryRecord): Promise<boolean> {
+  if (!process.env.ENTRY_WEBHOOK_URL) return false;
+
+  // 一時的な失敗に備えて1度だけ再送する
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const result = await postWebhookOnce(record);
+      if (result.ok) return true;
+      console.error(`[event-entry] webhook rejected the entry (attempt ${attempt}): ${result.reason}`);
+    } catch {
+      console.error(`[event-entry] webhook request failed (attempt ${attempt})`);
+    }
+    if (attempt === 1) await new Promise((r) => setTimeout(r, 400));
+  }
+  return false;
 }
 
 export async function saveEntry(record: EntryRecord): Promise<void> {
-  const results = await Promise.all([postWebhook(record), writeJsonl(record)]);
-  if (!results.some(Boolean)) {
+  const [webhookOk, fileOk] = await Promise.all([postWebhook(record), writeJsonl(record)]);
+
+  // 受け口を設定しているのに届かなかった場合はエラーにします。
+  // Vercel のファイルは再デプロイで消えるため、JSONLへ書けたことを
+  // 成功とみなすと、申込者には完了と表示されたまま記録だけが失われます。
+  if (process.env.ENTRY_WEBHOOK_URL && !webhookOk) {
+    throw new Error('entry_webhook_failed');
+  }
+  if (!webhookOk && !fileOk) {
     throw new Error('entry_persistence_failed');
   }
 }
