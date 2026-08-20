@@ -133,12 +133,24 @@ async function postWebhook(record: EntryRecord): Promise<boolean> {
 }
 
 export async function saveEntry(record: EntryRecord): Promise<void> {
+  const webhookUrl = process.env.ENTRY_WEBHOOK_URL;
+
+  // 本番で受け口が未設定なのは設定漏れです。
+  // このまま進めると JSONL への書き込みだけが成功し、申込者には完了と
+  // 表示されたまま、記録は再デプロイで消えて誰にも気づかれません。
+  // 実際にこの状態で申込みを失ったため、はっきりエラーにします。
+  if (process.env.NODE_ENV === 'production' && !webhookUrl) {
+    console.error(
+      '[event-entry] ENTRY_WEBHOOK_URL is not configured. ' +
+        'Vercel の環境変数を Production に設定して再デプロイしてください。',
+    );
+    throw new Error('entry_webhook_not_configured');
+  }
+
   const [webhookOk, fileOk] = await Promise.all([postWebhook(record), writeJsonl(record)]);
 
-  // 受け口を設定しているのに届かなかった場合はエラーにします。
-  // Vercel のファイルは再デプロイで消えるため、JSONLへ書けたことを
-  // 成功とみなすと、申込者には完了と表示されたまま記録だけが失われます。
-  if (process.env.ENTRY_WEBHOOK_URL && !webhookOk) {
+  // 受け口を設定しているのに届かなかった場合もエラーにします。
+  if (webhookUrl && !webhookOk) {
     throw new Error('entry_webhook_failed');
   }
   if (!webhookOk && !fileOk) {
