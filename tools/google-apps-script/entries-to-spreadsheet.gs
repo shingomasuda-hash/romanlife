@@ -480,10 +480,36 @@ function testMailSelf() {
 
 /**
  * ブラウザで /exec を開いたときの応答。
- * デプロイが生きているかの確認用で、データは一切返しません。
+ *
+ * 合言葉なしで開いた場合：デプロイが生きているかだけを返します。
+ *
+ * 合言葉つきで開いた場合（Vercel の ENTRY_WEBHOOK_URL をそのまま開いたとき）：
+ * 「その合言葉で本当に受け付けられるか」「シートに書ける状態か」まで確認して返します。
+ * 申込データは一切返しません（件数のみ）。
+ *
+ *   {"ok":true,"sheet":"申込一覧","rows":12,"notifyTo":2,"autoReply":true}
+ *
+ * これが表示されれば、URL・合言葉・アクセス権・シート権限のすべてが正しい状態です。
+ * 逆に unauthorized やログイン画面が出た場合は、その時点で設定に誤りがあります。
+ * 広告を出す前と、設定を変えたあとに必ず確認してください。
  */
-function doGet() {
-  return ContentService
-    .createTextOutput('OK: 申込データの受け口は動作しています。')
-    .setMimeType(ContentService.MimeType.TEXT);
+function doGet(e) {
+  var token = e && e.parameter ? e.parameter.token : '';
+  if (!TOKEN || token !== TOKEN) {
+    return ContentService
+      .createTextOutput('OK: 申込データの受け口は動作しています。')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+  try {
+    var sheet = getSheet();
+    return json({
+      ok: true,
+      sheet: SHEET_NAME,
+      rows: Math.max(0, sheet.getLastRow() - 1),   // 見出し行を除いた件数
+      notifyTo: NOTIFY_TO.split(',').filter(function (s) { return s.trim(); }).length,
+      autoReply: AUTO_REPLY
+    });
+  } catch (err) {
+    return json({ ok: false, message: String(err) });
+  }
 }
