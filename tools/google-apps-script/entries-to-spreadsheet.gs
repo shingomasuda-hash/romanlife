@@ -55,6 +55,21 @@ var NOTIFY_TO = 'saiyo@romanlife.co.jp,shingo.masuda@any-ware.jp';
 var MY_EMAIL = '';
 
 /**
+ * ★ 受け口の見張り用。監視したいウェブアプリのURL（?token= 付き）。
+ *
+ * ここを設定して monitorReceiver() を日次トリガーに登録すると、
+ * 1日1回この受け口を外から叩き、正常に応答しなければ知らせます。
+ * 設定が壊れたまま何日も気づかない、という事態を防ぐためのものです。
+ *
+ * 自分自身を監視する場合も、Vercel と同じURLを入れてください。
+ * スクリプトからの通信は匿名アクセスとして扱われるため、
+ * 「外から本当に届くか」をそのまま確かめられます。
+ *
+ * 空にすると監視は行いません。
+ */
+var MONITOR_URL = '';
+
+/**
  * ★ 差出人（送信元）として表示したいアドレス。
  *
  * 空にすると、スクリプトを実行しているGoogleアカウントのアドレスになります。
@@ -427,6 +442,87 @@ function testFullFlow() {
   Logger.log('確認2：担当者宛（' + NOTIFY_TO + '）に通知メールが届いたか');
   Logger.log('確認3：申込者宛（' + MY_EMAIL + '）に受付完了メールが届いたか');
   Logger.log('確認後、追記されたテスト行は削除してください。');
+}
+
+/**
+ * ★ 受け口の見張り。1日1回の実行を想定しています。
+ *
+ * MONITOR_URL を外から叩き、{"ok":true,...} が返らなければ
+ * NOTIFY_TO 宛に「受け付けられない状態です」と知らせます。
+ * 正常なときは何も送りません（毎日メールが来ると読まれなくなるため）。
+ *
+ * ------------------------------------------------------------------
+ * 登録手順
+ * ------------------------------------------------------------------
+ * 1. 上の MONITOR_URL に、Vercel に設定しているURL（?token= 付き）を貼る
+ * 2. 左メニューの時計アイコン（トリガー）→「トリガーを追加」
+ * 3. 実行する関数        : monitorReceiver
+ *    イベントのソース    : 時間主導型
+ *    時間ベースのトリガー: 日タイマー
+ *    時刻                : 午前8時〜9時 など
+ * 4. 保存
+ */
+function monitorReceiver() {
+  if (!MONITOR_URL) { Logger.log('MONITOR_URL が未設定のため、監視をスキップしました。'); return; }
+
+  var reason = '';
+  try {
+    var res = UrlFetchApp.fetch(MONITOR_URL, {
+      muteHttpExceptions: true,
+      followRedirects: true
+    });
+    var code = res.getResponseCode();
+    var text = res.getContentText().slice(0, 300);
+
+    if (code !== 200) {
+      reason = 'HTTPステータスが ' + code + ' です。URLが誤っているか、公開されていません。';
+    } else {
+      var body = null;
+      try { body = JSON.parse(text); } catch (e) { body = null; }
+      if (!body) {
+        reason = 'JSON以外が返っています。アクセスできるユーザーが「全員」になっているか確認してください。\n応答：' + text;
+      } else if (body.ok !== true) {
+        reason = '受け口が受け付けを拒否しました。合言葉（token）が一致していない可能性があります。\n応答：' + text;
+      }
+    }
+  } catch (err) {
+    reason = '通信できませんでした：' + err;
+  }
+
+  if (!reason) {
+    Logger.log('受け口は正常です。');
+    return;
+  }
+
+  Logger.log('異常を検知しました：' + reason);
+  var body = [
+    'オープン・カンパニー申込フォームの受け口に異常を検知しました。',
+    'この状態では、申込みを受け付けられません。',
+    '',
+    '── 検知内容 ──',
+    reason,
+    '',
+    '── 確認してください ──',
+    '1. Vercel の環境変数 ENTRY_WEBHOOK_URL に値が入っているか（保存後は Redeploy）',
+    '2. Apps Script「デプロイを管理」でアクセスできるユーザーが「全員」か',
+    '3. スクリプトを直したあと「新バージョン」で再デプロイしたか',
+    '',
+    '検知日時：' + Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss'),
+    '',
+    '※このメールは1日1回の自動確認から送信されています。',
+  ].join('\n');
+
+  NOTIFY_TO.split(',').forEach(function (to) {
+    to = to.trim();
+    if (!to) return;
+    try {
+      MailApp.sendEmail(to, '【要確認】申込フォームの受け口に異常があります', body,
+        { name: 'ロマンライフ 申込フォーム 見張り' });
+      Logger.log('警告を送信しました → ' + to);
+    } catch (err) {
+      Logger.log('警告の送信に失敗 → ' + to + ' : ' + err);
+    }
+  });
 }
 
 /**
