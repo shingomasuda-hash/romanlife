@@ -138,22 +138,26 @@ async function postWebhook(url: string, label: string, record: EntryRecord): Pro
 }
 
 /**
- * 保存に失敗した申込内容を、復旧できる形でサーバーログへ残す。
+ * 申込内容をサーバーログへ残す。成功・失敗のどちらも記録します。
  *
  * 個人情報をログに出すのは本意ではありませんが、受け口へ届かなかった申込みが
  * どこにも残らず失われる事故が実際に起きたため、失われるよりは残すという判断です。
- * 成功した申込みは出力しません（失敗したものだけ）。
+ *
+ * Vercel → Logs で「RECORD」を検索すると全件、
+ * 「status=failed」を検索すると取りこぼした分だけが出ます。
  *
  * ・出力先は Vercel の Runtime Logs で、プロジェクトのメンバーのみ閲覧できます
- * ・保存期間には上限があります。恒久的な控えではなく、
- *   気づいてから手作業で拾い上げるための最後の手段です
+ * ・保存期間には上限があります（Vercelのプランに依存）。恒久的な控えではなく、
+ *   スプレッドシートを補うための控えとお考えください
  */
-function logRescueRecord(record: EntryRecord): void {
-  console.error(
-    '[event-entry][RESCUE] 保存に失敗しました。以下は復旧用の申込内容です。' +
-      `受付番号=${record.receiptNumber} ` +
-      JSON.stringify(record),
-  );
+function logRecord(record: EntryRecord, status: 'ok' | 'failed'): void {
+  const line =
+    `[event-entry][RECORD] status=${status} ` +
+    `受付番号=${record.receiptNumber} ` +
+    JSON.stringify(record);
+  // 失敗分は検索・通知で拾いやすいようエラーとして出します
+  if (status === 'failed') console.error(line);
+  else console.log(line);
 }
 
 export async function saveEntry(record: EntryRecord): Promise<void> {
@@ -169,7 +173,7 @@ export async function saveEntry(record: EntryRecord): Promise<void> {
       '[event-entry] ENTRY_WEBHOOK_URL is not configured. ' +
         'Vercel の環境変数を Production に設定して再デプロイしてください。',
     );
-    logRescueRecord(record);
+    logRecord(record, 'failed');
     throw new Error('entry_webhook_not_configured');
   }
 
@@ -192,12 +196,15 @@ export async function saveEntry(record: EntryRecord): Promise<void> {
   if (backupUrl && !backupOk && primaryOk) {
     console.error('[event-entry] 予備の受け口が失敗しました。予備側の設定を確認してください。');
   }
-  if (primaryOk || backupOk) return;
+  if (primaryOk || backupOk) {
+    logRecord(record, 'ok');
+    return;
+  }
 
   // ここに来たら、どの受け口にも届いていません。
   // JSONL は再デプロイで消えるため控えとして当てにできないので、
   // 申込内容をログへ残したうえでエラーにし、申込者に再送信を促します。
-  logRescueRecord(record);
+  logRecord(record, 'failed');
   if (primaryUrl || backupUrl) {
     throw new Error('entry_webhook_failed');
   }
