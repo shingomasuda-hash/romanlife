@@ -15,6 +15,12 @@ export type EventSession = {
   /** 支援技術・構造化データ向けの ISO 時刻（JST） */
   startTime: string;
   endTime: string;
+  /**
+   * その時間帯だけを受付終了にする場合は true。
+   * 定員に達したときなど、日程は残したまま片方の枠だけ締めたい場合に使います。
+   * 表示・フォームの選択肢・サーバー側の検証のすべてがこの値を見ます。
+   */
+  closed?: boolean;
 };
 
 export type EventDate = {
@@ -84,6 +90,7 @@ export const EVENT_DATES: EventDate[] = [
         time: '10:00〜13:00',
         startTime: '2026-09-04T10:00:00+09:00',
         endTime: '2026-09-04T13:00:00+09:00',
+        closed: true,
       },
       {
         id: 'afternoon',
@@ -158,4 +165,13 @@ export function isClosed(eventDate: EventDate, now: Date = new Date()): boolean 
 
 export function isAllClosed(now: Date = new Date()): boolean {
   return EVENT_DATES.every((d) => isClosed(d, now));
+}
+
+/** その時間帯が申し込める状態か（日程の締切と、時間帯ごとの受付終了の両方を見ます） */
+export function isSessionClosed(
+  eventDate: EventDate,
+  session: EventSession,
+  now: Date = new Date(),
+): boolean {
+  return session.closed === true || isClosed(eventDate, now);
 }

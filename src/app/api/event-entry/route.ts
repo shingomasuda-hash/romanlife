@@ -145,6 +145,11 @@ export async function POST(req: NextRequest) {
       sessionId: '参加希望時間を選択してください。',
     });
   }
+  if (session.closed) {
+    return fail(410, `${eventDate.displayDate} ${session.label}の受付は終了しました。`, {
+      sessionId: 'この時間帯は受付を終了しました。別の時間帯を選択してください。',
+    });
+  }
 
   const tracking = data.tracking ?? {
     utm_source: '',

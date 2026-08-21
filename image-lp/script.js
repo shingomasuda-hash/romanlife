@@ -37,7 +37,7 @@
       weekday: 'FRI',
       readable: '2026年9月4日 金曜日',
       sessions: [
-        { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
+        { id: 'morning', label: '午前の部', time: '10:00〜13:00', closed: true },
         { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
       ],
       deadline: '2026-09-03T12:00:00+09:00',
@@ -75,6 +75,9 @@
   }
   function isClosed(d, now) {
     return (now || new Date()).getTime() >= new Date(d.deadline).getTime();
+  }
+  function isSessionClosed(d, s, now) {
+    return !!(s && s.closed) || isClosed(d, now);
   }
   function allClosed(now) {
     return EVENT_DATES.every(function (d) { return isClosed(d, now); });
@@ -135,7 +138,7 @@
           smoothTo($('#entry-form'), 'start');
           return;
         }
-        if (sel) { sel.value = id; clearError('eventDate'); }
+        if (sel) { sel.value = id; clearError('eventDate'); renderSessionOptions(); }
         track('schedule_card_click', { eventDateId: id });
         smoothTo($('#entry-form'), 'start');
         window.setTimeout(function () {
@@ -222,6 +225,34 @@
   }
 
   /* --- バリデーション（クライアント側。サーバー側でも必ず再検証すること） --- */
+  /**
+   * 参加希望時間の選択肢を、選ばれた日程に合わせて作り直します。
+   * 受付終了の時間帯は選べないようにし、理由が分かるよう表示にも出します。
+   */
+  var DEFAULT_SESSIONS = [
+    { id: 'morning', label: '午前の部', time: '10:00〜13:00' },
+    { id: 'afternoon', label: '午後の部', time: '14:30〜17:30' }
+  ];
+  function renderSessionOptions() {
+    var sel = $('#session');
+    if (!sel) return;
+    var d = getDate($('#eventDate') ? $('#eventDate').value : '');
+    var list = d ? d.sessions : DEFAULT_SESSIONS;
+    var prev = sel.value;
+
+    sel.innerHTML = '<option value="">選択してください</option>' +
+      list.map(function (s) {
+        var off = d && isSessionClosed(d, s);
+        return '<option value="' + s.id + '"' + (off ? ' disabled' : '') + '>' +
+          esc(s.label) + '　' + esc(s.time) + (off ? '（受付終了）' : '') + '</option>';
+      }).join('');
+
+    var keep = list.some(function (s) {
+      return s.id === prev && !(d && isSessionClosed(d, s));
+    });
+    sel.value = keep ? prev : '';
+  }
+
   function validate(d) {
     var e = {};
     var now = new Date();
@@ -231,6 +262,12 @@
     else if (isClosed(getDate(d.eventDate), now)) e.eventDate = 'この日程は受付を終了しました。別の日程を選択してください。';
 
     if (!d.session) e.session = '参加希望時間を選択してください。';
+    else {
+      var vd = getDate(d.eventDate);
+      var vs = vd && vd.sessions.filter(function (s) { return s.id === d.session; })[0];
+      if (vd && !vs) e.session = '参加希望時間を選択してください。';
+      else if (vd && vs && vs.closed) e.session = 'この時間帯は受付を終了しました。別の時間帯を選択してください。';
+    }
 
     if (!d.lastName) e.lastName = '姓を入力してください。';
     if (!d.firstName) e.firstName = '名を入力してください。';
@@ -608,6 +645,10 @@
     } else {
       slot.innerHTML = '';
     }
+
+    // 参加希望日が変わったら、参加希望時間の選択肢を作り直す
+    sel.addEventListener('change', renderSessionOptions);
+    renderSessionOptions();
 
     // 「その他」選択時の追加入力
     function toggleOther(selectId, rowId) {

@@ -388,7 +388,8 @@ export function EntryForm() {
                     <span className={styles.req}>必須</span>
                   </div>
                   <div className={styles.cards}>
-                    {EVENT_DATES[0].sessions.map((s) => (
+                    {/* 選ばれた日程の時間帯を出す。受付終了の枠は選べないようにする */}
+                    {(getEventDate(form.eventDateId) ?? EVENT_DATES[0]).sessions.map((s) => (
                       <SelectCard
                         key={s.id}
                         name="sessionId"
@@ -397,6 +398,8 @@ export function EntryForm() {
                         onChange={(v) => update('sessionId', v)}
                         title={s.label}
                         meta={s.time}
+                        disabled={s.closed === true}
+                        closedLabel={s.closed ? '受付終了' : undefined}
                       />
                     ))}
                   </div>

@@ -103,12 +103,19 @@ export const entrySchema = z
     }
     const eventDate = EVENT_DATES.find((d) => d.id === data.eventDateId);
     if (eventDate) {
-      const valid = eventDate.sessions.some((s) => s.id === data.sessionId);
-      if (!valid) {
+      const session = eventDate.sessions.find((s) => s.id === data.sessionId);
+      if (!session) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ['sessionId'],
           message: '参加希望時間を選択してください。',
+        });
+      } else if (session.closed) {
+        // 受付終了の時間帯は、画面側を書き換えられても受け付けません
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['sessionId'],
+          message: 'この時間帯は受付を終了しました。別の時間帯を選択してください。',
         });
       }
     }
